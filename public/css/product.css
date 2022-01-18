@@ -1,0 +1,60 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: cursive;
+}
+.main-header{
+    width: 100%;
+    height: 3.5rem;
+    background-color: rgb(88, 68, 41);
+    padding: 0 1.5rem;
+}
+.main-header_nav{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.main-header_item-list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+.main-header_item{
+    margin: 0 1rem;
+    padding: 0;
+}
+.main-header_item a{
+    text-decoration:  none;
+    color: azure;
+}
+ .main-header_item a:hover{
+    text-decoration:  none;
+    color: azure;
+}
+.form-control{
+    margin:  1rem 0;
+}
+.form-control label,
+.form-control input{
+    display:  block;
+}
+
+.form-control input{
+    border:  1px solid rgb(182, 70, 70);
+    font: inherit;
+    border-radius:  2px;
+}
+button{
+    font: inherit;
+    border:  1px solid rgb(36, 15, 110);
+    background: #FFF;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.product-form{
+   width: 20rem;
+   max-width: 90%;
+   margin: auto;
+}
