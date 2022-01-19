@@ -32,3 +32,37 @@ body {
     text-decoration:  none;
     color: azure;
 }
+.card{
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    max-width: 300px;
+    text-align: center;
+    min-height: 370px;
+    border-radius: 1rem;
+    margin: 1.5rem;
+    transition: 0.3s;
+    border: #8442f5 solid 1px;
+}
+
+.cardText {
+    margin: 0.5rem;
+    font-weight: 400;
+    opacity: 0.7;
+}
+.brandText{
+    color: #4287F5;
+}
+
+.priceText{
+    font-size: large;
+}
+.cardTitle{
+    margin: 0.5rem;
+    font-weight: bold;
+}
+
+
+
+

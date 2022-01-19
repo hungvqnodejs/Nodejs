@@ -4,7 +4,7 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title My Shop
+        title #{docTitle}
         link(rel="stylesheet", href="/css/main.css")
         link(rel="stylesheet", href="/css/product.css")
     body 
@@ -15,3 +15,16 @@ html(lang="en")
                         a(href="/") Shop 
                     li.main-header_item
                         a(href="/admin/add-product") Add Product
+        main
+            if prods.length > 0
+                .productHold 
+                    each product in prods
+                        div.card 
+                            h1.cardTitle #{product.title}
+                            img(src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2hvZXN8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60", alt="Nike")
+                            div.cardText
+                                p.categoryText men's sport shoes 
+                                h2.brandText Nike 
+                                p.priceText $250
+            else 
+                h1 No Products
