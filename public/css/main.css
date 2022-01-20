@@ -28,10 +28,13 @@ body {
     text-decoration:  none;
     color: azure;
 }
- .main-header_item a:hover{
+ .main-header_item a:hover,
+ .main-header_item a:active{
     text-decoration:  none;
-    color: azure;
+    color: rgb(15, 138, 138);
 }
+
+
 .card{
     cursor: pointer;
     display: flex;

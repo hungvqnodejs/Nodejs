@@ -1,23 +1,9 @@
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(http-equiv="X-UA-Compatible", content="IE=edge")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title #{docTitle}
-        link(rel="stylesheet", href="/css/main.css")
-        link(rel="stylesheet", href="/css/product.css")
-    body 
-        header.main-header 
-            nav.main-header_nav
-                ul.main-header_item-list
-                    li.main-header_item
-                        a(href="/") Shop 
-                    li.main-header_item
-                        a(href="/admin/add-product") Add Product
-        main
-            if prods.length > 0
-                .productHold 
+extends layouts/main-layout.pug
+
+block content 
+    main
+        if prods.length > 0
+           .productHold 
                     each product in prods
                         div.card 
                             h1.cardTitle #{product.title}
@@ -25,6 +11,8 @@ html(lang="en")
                             div.cardText
                                 p.categoryText men's sport shoes 
                                 h2.brandText Nike 
-                                p.priceText $250
-            else 
-                h1 No Products
+                                p.priceText $250     
+        else 
+            h1 No Products
+
+            
