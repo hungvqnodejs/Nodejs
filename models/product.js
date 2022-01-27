@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const Cart = require('./cart')
+
 const p = path.join(
   path.dirname(require.main.filename),
   'data',
@@ -19,7 +21,7 @@ const getProductsFromFile = cb => {
 
 module.exports = class Product {
   constructor(id, title, imageUrl, description, price) {
-    this.id = id,
+    this.id = id;
     this.title = title;
     this.imageUrl = imageUrl;
     this.description = description;
@@ -28,10 +30,12 @@ module.exports = class Product {
 
   save() {
     getProductsFromFile(products => {
-      if ( this.id) {
-        const existringProductIndex = products.findIndex(prod => prod.id === this.id);
+      if (this.id) {
+        const existingProductIndex = products.findIndex(
+          prod => prod.id === this.id
+        );
         const updatedProducts = [...products];
-        updatedProducts[existringProductIndex] = this;
+        updatedProducts[existingProductIndex] = this;
         fs.writeFile(p, JSON.stringify(updatedProducts), err => {
           console.log(err);
         });
@@ -42,19 +46,19 @@ module.exports = class Product {
           console.log(err);
         });
       }
-      
     });
   }
 
-  static delete(id) {
+  static deleteById(id) {
     getProductsFromFile(products => {
-      const updatedProducts = products.filter( prod => prod.id !== id);
+      const product = products.find(prod => prod.id === id);
+      const updatedProducts = products.filter(prod => prod.id !== id);
       fs.writeFile(p, JSON.stringify(updatedProducts), err => {
-        if(err) {
-          
+        if (!err) {
+          Cart.deleteProduct(id, product.price);
         }
-      })
-    })
+      });
+    });
   }
 
   static fetchAll(cb) {
@@ -63,8 +67,8 @@ module.exports = class Product {
 
   static findById(id, cb) {
     getProductsFromFile(products => {
-      const product = products.find( p => p.id === id);
+      const product = products.find(p => p.id === id);
       cb(product);
-    })
+    });
   }
 };
