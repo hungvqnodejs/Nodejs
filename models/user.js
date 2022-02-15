@@ -80,18 +80,28 @@ class User {
 
   addOrder() {
     const db = getDb();
-    return db
+    return this.getCart()
+    .then(products => {
+      const order = {
+        item: products,
+        user: {
+          _id: new ObjectId(this._id),
+          name: this.name
+        }
+      }
+      return db
       .collection('orders')
-      .insertOne(this.cart)
-      .then(result => {
-        this.cart = { items: [] };
-        return db
-          .collection('users')
-          .updateOne(
-            { _id: new ObjectId(this._id) },
-            { $set: { cart: { items: [] } } }
-          );
-      });
+      .insertOne(order)
+    })
+    .then(result => {
+      this.cart = { items: [] };
+      return db
+        .collection('users')
+        .updateOne(
+          { _id: new ObjectId(this._id) },
+          { $set: { cart: { items: [] } } }
+        );
+    });
   }
 
   static findById(userId) {
