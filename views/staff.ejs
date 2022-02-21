@@ -3,7 +3,32 @@
 </head>
 <%- include('./includes/navigation.ejs') %>
 
-<h1>ok</h1>
+<section class="resume-section" id="about">
+    <div class="resume-section-content">
+        <h1 class="mb-0">
+            Mr. 
+            <span class="text-primary"> Ken</span>
+        </h1>
+        <br>
+        <p class="lead">Hãy lựa chọn nơi làm việc </p><div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" value="Công ty">Công ty</a></li>
+              <li><a class="dropdown-item">Nhà</a></li>
+              <li><a class="dropdown-item">Khách hàng</a></li>
+            </ul>
+          </div> 
+          <br>
+        <div class="subheading mb-5">
+            Nếu đã sẵn sáng làm việc xin hãy <a class="btn btn-primary btn-xl" href="/staff-rollcall">đIỂM DANH</a>
+        </div>
+        <div class="subheading mb-5">
+            Nếu bạn bận hãy chọn <a class="btn btn-primary btn-xl" href="/staff- leave">NGHỈ PHÉP</a>
+        </div>
+        
+    </div>
+</section>
 
 <script src="/js/staff.js"></script>
 <%- include('./includes/end.ejs') %>
