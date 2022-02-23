@@ -10,21 +10,36 @@
             <span class="text-primary"> Ken</span>
         </h1>
         <br>
-        <p class="lead">Hãy lựa chọn nơi làm việc </p><div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" value="Công ty">Công ty</a></li>
-              <li><a class="dropdown-item">Nhà</a></li>
-              <li><a class="dropdown-item">Khách hàng</a></li>
-            </ul>
-          </div> 
+            <h4 class="mb-3">Hãy lựa chọn nơi làm việc</h4>
+            <form action="/staff-rollcall" method="POST">
+            <div class="my-3">
+              <div class="form-check">
+                <input id="company" name="company" type="radio" class="form-check-input" checked required>
+                <label class="form-check-label" for="company">Công ty</label>
+              </div>
+              <div class="form-check">
+                <input id="home" name="home" type="radio" class="form-check-input" required>
+                <label class="form-check-label" for="home">Nhà</label>
+              </div>
+              <div class="form-check">
+                <input id="custome" name="custome" type="radio" class="form-check-input" required>
+                <label class="form-check-label" for="custome">Khách hàng</label>
+              </div>
+            </div>
           <br>
         <div class="subheading mb-5">
-            Nếu đã sẵn sáng làm việc xin hãy <a class="btn btn-primary btn-xl" href="/staff-rollcall">đIỂM DANH</a>
+           Nếu đã sẵn sáng làm việc xin hãy
+                <input type="hidden" value="" name="staff-rollcall">
+                <button class="btn btn-primary btn-xl" type="submit">ĐIỂM DANH</button>
+           
         </div>
+    </form>
+        <hr>
         <div class="subheading mb-5">
-            Nếu bạn bận hãy chọn <a class="btn btn-primary btn-xl" href="/staff- leave">NGHỈ PHÉP</a>
+            <form action="/staff-leave" method="POST">Nếu bạn bận hãy chọn
+                <input type="hidden" value="" name="staff-leave">
+                <button class="btn btn-primary btn-xl" type="submit">NGHỈ PHÉP</button>
+            </form>
         </div>
         
     </div>
