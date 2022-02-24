@@ -12,10 +12,11 @@
         <br>
         <p>Online    <i class="bi bi-circle-fill text-success"></i></p>
         <br>
-        <p class="lead">Bắt đầu làm việc tại công ty vào lúc </p>
-
-        <a class="btn btn-primary btn-xl" href="/staff-end">KẾT THÚC</a>
-      
+        <p class="lead">Bắt đầu làm việc tại công ty vào lúc <%= rollcall.startTime.toLocaleString() %></p>
+        <form action="/staff-end/<%= rollcall._id %>" method="POST">
+        <input type="hidden" value="" name="staff-end">
+                <button class="btn btn-primary btn-xl" type="submit">KẾT THÚC</button>
+        </form>
         
     </div>
 </section>

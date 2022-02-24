@@ -1,0 +1,27 @@
+<%- include('./includes/head.ejs') %>
+<link rel="stylesheet" href="/css/staff.css">
+</head>
+<%- include('./includes/navigation.ejs') %>
+
+<section class="resume-section" id="about">
+    <div class="resume-section-content">
+        <h1 class="mb-0">
+            Mr. 
+            <span class="text-primary">Ken</span>
+        </h1>
+        <br>
+        <h4 class="text-muted mb-0">Ngày sinh: </h4> <p><%= user.doB.toLocaleDateString() %></p>
+        <h4 class="text-muted mb-0">Hệ số lương: </h4> <p><%= user.salaryScale %></p>
+        <h4 class="text-muted mb-0">Ngày vào công ty: </h4> <p><%= user.startDate.toLocaleDateString()  %></p>
+        <h4 class="text-muted mb-0">Phòng ban: </h4> <p><%= user.department  %></p>
+        <h4 class="text-muted mb-0">Ngày nghỉ phép: </h4> <p><%= user.annualLeave  %></p>
+        <h4 class="text-muted mb-0">
+            <form action="/info" method="POST">Ảnh đại diện
+                <input type="text" value="" name="info">
+                <button class="btn btn-primary" type="submit">Chỉnh sửa</button>     
+        </h4>       
+    </div>
+</section>
+
+<script src="/js/staff.js"></script>
+<%- include('./includes/end.ejs') %>

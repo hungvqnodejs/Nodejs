@@ -23,11 +23,14 @@
               </tr>
             </thead>
             <tbody>
+              <% for (let item of rollcall) { %>
               <tr>             
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <td><%= item.workplace %></td>
+                <td><%= item.startTime.toLocaleString() %></td>
+                <td><%= item.endTime.toLocaleString() %></td>
               </tr>
+
+              <% } %>
             </tbody>
           </table>    
     </div>

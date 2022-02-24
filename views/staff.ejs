@@ -7,23 +7,23 @@
     <div class="resume-section-content">
         <h1 class="mb-0">
             Mr. 
-            <span class="text-primary"> Ken</span>
+            <span class="text-primary"> <%= user.name %></span>
         </h1>
         <br>
             <h4 class="mb-3">Hãy lựa chọn nơi làm việc</h4>
             <form action="/staff-rollcall" method="POST">
             <div class="my-3">
               <div class="form-check">
-                <input id="company" name="company" type="radio" class="form-check-input" checked required>
-                <label class="form-check-label" for="company">Công ty</label>
+                <input id="company" name="workplace" type="radio" class="form-check-input" value="Công ty" checked required>
+                <label class="form-check-label" for="company" >Công ty</label>
               </div>
               <div class="form-check">
-                <input id="home" name="home" type="radio" class="form-check-input" required>
-                <label class="form-check-label" for="home">Nhà</label>
+                <input id="home" name="workplace" type="radio" class="form-check-input" value="Nhà" required>
+                <label class="form-check-label" for="home" >Nhà</label>
               </div>
               <div class="form-check">
-                <input id="custome" name="custome" type="radio" class="form-check-input" required>
-                <label class="form-check-label" for="custome">Khách hàng</label>
+                <input id="custome" name="workplace" type="radio" class="form-check-input" value="Khách hàng" required>
+                <label class="form-check-label" for="custome" >Khách hàng</label>
               </div>
             </div>
           <br>
