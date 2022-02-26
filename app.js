@@ -36,7 +36,7 @@ mongoose.connect('mongodb+srv://hungvq:Pass1@cluster0.mzvgb.mongodb.net/Staff?re
                     startDate: new Date("2022-02-12"),
                     department: 'IT',
                     annualLeave: 12,
-                    Image: ''
+                    Image: '1234'
                 })
                 user.save()
             }

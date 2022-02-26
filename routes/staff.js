@@ -14,5 +14,6 @@ router.get('/info', staffController.getInfo)
 router.post('/staff-rollcall', staffController.postStaffRollcall)
 router.post('/staff-end/:rollcallId', staffController.postStaffEnd)
 router.post('/info', staffController.postInfo)
+router.post('/staff-leave', staffController.postStaffLeave)
 
 module.exports = router;

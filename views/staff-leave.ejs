@@ -1,9 +1,67 @@
 <%- include('./includes/head.ejs') %>
 <link rel="stylesheet" href="/css/staff.css">
+<link rel="stylesheet" href="/css/main.css">
+<head>
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all">
 </head>
 <%- include('./includes/navigation.ejs') %>
 
-<h1>leave</h1>
+<section class="resume-section" id="about">
+    <div class="resume-section-content">
+        <h1 class="mb-0">
+            Mr. 
+            <span class="text-primary"> <%= user.name %></span>
+        </h1>
 
-<script src="/js/staff.js"></script>
+        <hr>
+        <br>
+
+        <div class="container">
+            <form action="/staff-leave" method="POST">
+            <div class="row gy-3 ">
+                    <div class="col-md-6">
+                      <label for="startLeave" class="form-label">Ngày bắt đầu</label>
+                      <input type="text" class="form-control datetimepicker" name="startLeave" placeholder="" required>
+                    </div>
+        
+                    <div class="col-md-6">
+                      <label for="endLeave" class="form-label">Ngày kết thúc</label>
+                      <input type="text" class="form-control datetimepicker" name="endLeave" placeholder="" required>
+                    </div>  
+                    <div>
+                        <label for="reason" class="form-label">Lý do</label>
+                        <textarea class="form-control" name="reason" type="text" placeholder="Enter your reason here..." style="height: 10rem"></textarea>
+                        
+                    </div>
+
+                    <div class="col-md-3">
+                        <button class="btn btn-primary " type="submit">Gửi</button>   
+                     </div>
+             </div>
+             <br>
+            
+               
+            </form>    
+        </div>
+        <br>
+        <br>
+      
+        <p class="subheading mb-3">Số ngày xin nghỉ: <%= totalTime %></p> 
+        <p class="subheading mb-3">Số ngày nghỉ phép còn lại <%= user.annualLeave %></p>
+        <p class="subheading mb-3"><%= error %> </p>
+    </div>
+  
+</section>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
+<script src="js/jquery.js"></script>
+<script src="js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    jQuery('.datetimepicker').datetimepicker({
+        format:'H:i d/m/Y',
+    });
+</script>
 <%- include('./includes/end.ejs') %>

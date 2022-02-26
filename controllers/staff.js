@@ -1,5 +1,7 @@
 const Rollcall = require("../models/rollcall");
 const User = require("../models/user");
+const AnnualLeave = require("../models/annualLeave");
+const moment = require("moment");
 
 exports.homepage = async (req, res) => {
   res.render("index", { pageTitle: "Trang chủ" });
@@ -11,9 +13,13 @@ exports.getStaff = async (req, res) => {
 };
 
 exports.getStaffRollcall = async (req, res) => {
+  const user = await User.findById("6215385dc20b2a08e7b89e14");
   const rollcall = await Rollcall.findById(req.params.rollcallId);
-  res.render("staff-rollcall", { pageTitle: "Điểm danh", rollcall: rollcall });
-
+  res.render("staff-rollcall", {
+    pageTitle: "Điểm danh",
+    rollcall: rollcall,
+    user: user,
+  });
 };
 
 exports.postStaffRollcall = async (req, res) => {
@@ -21,7 +27,7 @@ exports.postStaffRollcall = async (req, res) => {
   const rollcall = new Rollcall({
     workplace: req.body.workplace,
     startTime: startTime,
-    endTime: '',
+    endTime: "",
     userId: "6215385dc20b2a08e7b89e14",
   });
   rollcall
@@ -35,61 +41,138 @@ exports.postStaffRollcall = async (req, res) => {
     });
 };
 
-
 exports.getStaffEnd = async (req, res) => {
-    const rollcall = await Rollcall.find();
-    // if ( rollcall.length > 0) {
-    //     for (i of rollcall ) {
-    //         const timeWork = (rollcall[i].endTime.getTime() - rollcall[i].startTime.getTime())/1000
-    //         console.log('ok', timeWork)
-    //     }   
-    // }
-    
-    res.render("staff-end", { pageTitle: "Kết thúc", rollcall: rollcall });
+  const user = await User.findById("6215385dc20b2a08e7b89e14");
+  const rollcall = await Rollcall.find();
+  var i = 0;
+  var timework = 0;
+  for (i = 0; i < rollcall.length; i++) {
+    timework +=
+      (Date.parse(rollcall[i].endTime) - Date.parse(rollcall[i].startTime)) /
+      1000;
+  }
+
+  res.render("staff-end", {
+    pageTitle: "Kết thúc",
+    rollcall: rollcall,
+    user: user,
+    timework: timework,
+  });
 };
 
-exports.postStaffEnd = async(req, res) => {
- const rollcall = await Rollcall.findById(req.params.rollcallId);
+exports.postStaffEnd = async (req, res) => {
+  const rollcall = await Rollcall.findById(req.params.rollcallId);
   const workplace = rollcall.workplace;
   const startTime = rollcall.startTime;
-  const endTime = new Date()
+  const endTime = new Date();
   Rollcall.findById(req.params.rollcallId)
-          .then(rollcall => {
-              rollcall.workplace = workplace,
-              rollcall.startTime = startTime,
-              rollcall.endTime = endTime
-              return rollcall.save()
-          })
-          .then(() => res.redirect("/staff-end"))
-          .catch(err => {
-              console.log(err)
-          })
+    .then((rollcall) => {
+      (rollcall.workplace = workplace),
+        (rollcall.startTime = startTime),
+        (rollcall.endTime = endTime);
+      return rollcall.save();
+    })
+    .then(() => res.redirect("/staff-end"))
+    .catch((err) => {
+      console.log(err);
+    });
 };
+
+function diff_hours(dt2, dt1) {
+  var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+  diff /= 60 * 60;
+  return Math.abs(Math.round(diff));
+}
 
 exports.getStaffLeave = async (req, res) => {
-  res.render("staff-leave", { pageTitle: "Nghỉ Phép" });
+  const user = await User.findById("6215385dc20b2a08e7b89e14");
+  const annualLeave = await AnnualLeave.find();
+
+  const totalTime = annualLeave
+    .map((item) => item.totalTime)
+    .reduce((prev, curr) => prev + curr, 0);
+
+  res.render("staff-leave", {
+    pageTitle: "Nghỉ Phép",
+    user: user,
+    totalTime: totalTime,
+    error: "",
+  });
 };
 
+exports.postStaffLeave = async (req, res) => {
+  const startLeave = moment(req.body.startLeave, "hh:mm DD/MM/YYYY").toDate();
+  const endLeave = moment(req.body.endLeave, "hh:mm DD/MM/YYYY").toDate();
 
-exports.getInfo = async(req, res) => {
-    const user = await User.findById("6215385dc20b2a08e7b89e14");
-    res.render("info", { pageTitle: "Thông tin cá nhân", user: user });
-}
+  let totalTime = diff_hours(endLeave, startLeave);
 
-exports.postInfo = async(req, res) => {
+  if (totalTime < 24) {
+    totalTime = totalTime / 8;
+  } else {
+    totalTime = totalTime / 24;
+  }
+  
+
+  let message = "";
+  if (totalTime > 12) {
     const user = await User.findById("6215385dc20b2a08e7b89e14");
-    const Image = user.Image
-    User.findById("6215385dc20b2a08e7b89e14")
-        .then(user => {
-            user.Image = Image
-            console.log(user)
-            return user.save()
-           
-        })
-        .then(result => {
-            res.redirect("/info")
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}
+    message = "Đã quá số ngày nghỉ phép";
+    res.render("staff-leave", {
+      pageTitle: "Nghỉ Phép",
+      user: user,
+      totalTime: totalTime,
+      error: message,
+    });
+  } else {
+    const user = await User.findById("6215385dc20b2a08e7b89e14");
+  const leaveLeft = user.annualLeave - totalTime;
+
+  User.findById("6215385dc20b2a08e7b89e14")
+    .then((user) => {
+      user.annualLeave = leaveLeft;
+      console.log(user);
+      return user.save();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+    
+    const annualLeave = new AnnualLeave({
+      startLeave: startLeave,
+      endLeave: endLeave,
+      totalTime,
+      reason: req.body.reason,
+      userId: "6215385dc20b2a08e7b89e14",
+    });
+    annualLeave
+      .save()
+      .then((result) => {
+        console.log(result);
+        res.redirect("staff-leave");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+};
+
+exports.getInfo = async (req, res) => {
+  const user = await User.findById("6215385dc20b2a08e7b89e14");
+  res.render("info", { pageTitle: "Thông tin cá nhân", user: user });
+};
+
+exports.postInfo = async (req, res) => {
+  const Image = req.body.image;
+  User.findById("6215385dc20b2a08e7b89e14")
+    .then((user) => {
+      user.Image = Image;
+      console.log(user);
+      return user.save();
+    })
+    .then((result) => {
+      res.redirect("/info");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
