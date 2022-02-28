@@ -1,0 +1,199 @@
+<%- include('./includes/head.ejs') %>
+<link rel="stylesheet" href="/css/staff.css">
+<link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all">
+</head>
+<%- include('./includes/navigation.ejs') %>
+
+<section class="resume-section" id="about">
+    <div class="resume-section-content">
+        <h1 class="mb-0">
+            Mr. 
+            <span class="text-primary"> <%= user.name %></span>
+        </h1>
+
+        <hr>
+        <br>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-headingOne">
+                <button class="accordion-button collapsed subheading" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    Đăng ký thông tin thân nhiệt
+                </button>
+              </h2>
+              <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                <form action="/covid" method="POST">
+                <div class="accordion-body"><div class="row g-5">
+                  
+                    <div class="col-md-4">
+                      <label for="measureDay" class="form-label">Ngày do thân nhiệt</label>
+                      <input type="text" class="form-control datetimepicker" name="measureDay" placeholder="" required>
+                      <div class="invalid-feedback">
+                        Hãy chọn thời gian đo
+                      </div>
+                    </div>
+  
+                    <div class="col-md-2">
+                      <label for="temperature" class="form-label">Nhiệt độ cơ thế</label>
+                      <input type="text" class="form-control" name="temperature" placeholder="" required>
+                      <div class="invalid-feedback">
+                        Hãy nhập nhiệt độ cơ thể
+                      </div>
+                    </div>
+  
+                    <div class="col-md-3">
+                      <button class="btn btn-primary sendleave" type="submit">Gửi thông tin</button>   
+                   </div>
+                  
+                </div>
+                </form>  
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-headingTwo">
+                <button class="accordion-button collapsed subheading" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                    Đăng ký thông tin tiêm vaccine
+                </button>
+              </h2>
+              <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body"><div class="row g-5">
+                  <div class="col-md-2">
+                    <label for="country" class="form-label">Mũi Tiêm</label>
+                    <select class="form-select" id="country" required>
+                      <option value="Mũi 1">Mũi 1</option>
+                      <option value="Mũi 2">Mũi 2</option>
+                      <option value="Mũi 3">Mũi 3</option>
+                    </select>
+                    <div class="invalid-feedback">
+                      Hãy chọn mũi tiêm
+                    </div>
+                  </div>
+      
+                  <div class="col-md-3">
+                    <label for="vaccine" class="form-label">Loại vaccine</label>
+                    <select class="form-select" name="vaccine" required>
+                      <option value="" >Hãy chọn loại vaccine</option>
+                      <option value="Vero Cell">Vero Cell</option>
+                      <option value="AstraZeneca">AstraZeneca</option>
+                      <option value="Pfize">Pfize</option>
+                      <option value="Moderna">Moderna</option>
+                      <option value="Sputnik V">Sputnik V</option>
+                    </select>
+                    <div class="invalid-feedback">
+                      Hãy chọn loại vaccine
+                    </div>
+                  </div>
+      
+                  <div class="col-md-4">
+                    <label for="zip" class="form-label">Ngày tiêm</label>
+                    <input type="text" class="form-control datetimepicker" name="ngayTiem" placeholder="" required>
+                    <div class="invalid-feedback">
+                      Hãy chọn ngày tiêm
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <button class="btn btn-primary sendleave" type="submit">Gửi thông tin</button>   
+                 </div>
+
+                </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-headingThree">
+                <button class="accordion-button collapsed subheading" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                    Đăng ký thông tin dương tính với covid
+                </button>
+              </h2>
+              <div id="flush-collapseThree" class="accordion-collapse collapse " aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body textbold">Anh /chị hãy điền thông tin vào mẫu dưới đây: </div>
+
+                <div class="accordion-body">Trong vòng 14 ngày qua, Anh/Chị có đến quốc gia/vùng lãnh thổ nào (Có thể đi qua nhiều quốc gia):  </div>
+                <div>
+                  <textarea class="form-control" name="reason" type="text" style="height: 10rem"></textarea>
+                </div>
+
+                <div class="accordion-body">Trong vòng 14 ngày qua, Anh/Chị có thấy xuất hiện dấu hiệu nào sau đây không?   </div>
+                <div>
+                
+                  <div class="d-flex gap-5">
+                    <div class="list-group mx-0">
+                      <label class="list-group-item d-flex gap-2">
+                        <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                        <span>
+                          Ho
+                        </span>
+                      </label>
+                      <label class="list-group-item d-flex gap-2">
+                        <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                        <span>
+                          Sốt
+                        </span>
+                      </label>
+                      <label class="list-group-item d-flex gap-2">
+                        <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                        <span>
+                          Khó thở
+                        </span>
+                      </label>
+                      <label class="list-group-item d-flex gap-2">
+                        <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                        <span>
+                          Viêm phổi
+                        </span>
+                      </label>
+                      <label class="list-group-item d-flex gap-2">
+                        <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                        <span>
+                          Mệt mỏi
+                        </span>
+                      </label>
+                    </div>
+              </div>
+              <div class="accordion-body">Trong vòng 14 ngày qua, Anh/Chị có tiếp xúc với : </div>
+
+              <div class="d-flex gap-5">
+                <div class="list-group mx-0">
+                  <label class="list-group-item d-flex gap-2">
+                    <input class="form-check-input flex-shrink-0" type="checkbox" value="" >
+                    <span>
+                      Người bệnh hoặc nghi ngờ, mắc bệnh COVID-19 
+                    </span>
+                  </label>
+                  <label class="list-group-item d-flex gap-2">
+                    <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                    <span>
+                      Người từ nước có bệnh COVID-19 
+                    </span>
+                  </label>
+                  <label class="list-group-item d-flex gap-2">
+                    <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                    <span>
+                      Người có biểu hiện (Sốt, ho, khó thở, Viêm phổi) 
+                    </span>
+                  </label>
+                  
+                </div>
+                
+          </div>
+          <div class="col-md-3 justify-content-center">
+            <button class="btn btn-primary sendleave" type="submit">Gửi thông tin</button>   
+         </div>
+            </div>
+          </div>
+    </div>
+</section>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
+<script src="js/jquery.js"></script>
+<script src="js/jquery.datetimepicker.full.min.js"></script>
+<script>
+    jQuery('.datetimepicker').datetimepicker({
+        format:'H:i d/m/Y',
+    });
+</script>
+<%- include('./includes/end.ejs') %>

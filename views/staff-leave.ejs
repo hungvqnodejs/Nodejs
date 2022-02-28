@@ -1,7 +1,6 @@
 <%- include('./includes/head.ejs') %>
 <link rel="stylesheet" href="/css/staff.css">
 <link rel="stylesheet" href="/css/main.css">
-<head>
     <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all">
 </head>
 <%- include('./includes/navigation.ejs') %>
@@ -46,9 +45,10 @@
         <br>
         <br>
       
-        <p class="subheading mb-3">Số ngày xin nghỉ: <%= totalTime %></p> 
+        <p class="subheading mb-3">Số ngày xin nghỉ: <%= totalTime.toFixed(0) %></p> 
+        <p class="text-danger"><%= error %> </p>
         <p class="subheading mb-3">Số ngày nghỉ phép còn lại <%= user.annualLeave %></p>
-        <p class="subheading mb-3"><%= error %> </p>
+        
     </div>
   
 </section>

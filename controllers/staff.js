@@ -1,6 +1,7 @@
 const Rollcall = require("../models/rollcall");
 const User = require("../models/user");
 const AnnualLeave = require("../models/annualLeave");
+const BodyTemperature = require('../models/bodyTemperature');
 const moment = require("moment");
 
 exports.homepage = async (req, res) => {
@@ -56,7 +57,7 @@ exports.getStaffEnd = async (req, res) => {
     pageTitle: "Kết thúc",
     rollcall: rollcall,
     user: user,
-    timework: timework,
+    timework
   });
 };
 
@@ -65,11 +66,13 @@ exports.postStaffEnd = async (req, res) => {
   const workplace = rollcall.workplace;
   const startTime = rollcall.startTime;
   const endTime = new Date();
+  let timework = diff_hours(endTime, startTime);
   Rollcall.findById(req.params.rollcallId)
     .then((rollcall) => {
       (rollcall.workplace = workplace),
         (rollcall.startTime = startTime),
-        (rollcall.endTime = endTime);
+        (rollcall.endTime = endTime),
+        rollcall.timework = timework
       return rollcall.save();
     })
     .then(() => res.redirect("/staff-end"))
@@ -78,6 +81,8 @@ exports.postStaffEnd = async (req, res) => {
     });
 };
 
+
+// Hàm tình giờ ( thời gian kết thúc - thời gian bắt đầu)
 function diff_hours(dt2, dt1) {
   var diff = (dt2.getTime() - dt1.getTime()) / 1000;
   diff /= 60 * 60;
@@ -101,9 +106,10 @@ exports.getStaffLeave = async (req, res) => {
 };
 
 exports.postStaffLeave = async (req, res) => {
+ 
   const startLeave = moment(req.body.startLeave, "hh:mm DD/MM/YYYY").toDate();
   const endLeave = moment(req.body.endLeave, "hh:mm DD/MM/YYYY").toDate();
-
+  const user = await User.findById("6215385dc20b2a08e7b89e14");
   let totalTime = diff_hours(endLeave, startLeave);
 
   if (totalTime < 24) {
@@ -112,11 +118,9 @@ exports.postStaffLeave = async (req, res) => {
     totalTime = totalTime / 24;
   }
   
-
   let message = "";
-  if (totalTime > 12) {
-    const user = await User.findById("6215385dc20b2a08e7b89e14");
-    message = "Đã quá số ngày nghỉ phép";
+  if ( totalTime > user.annualLeave ) {
+    message = "Đã vượt quá số ngày nghỉ phép";
     res.render("staff-leave", {
       pageTitle: "Nghỉ Phép",
       user: user,
@@ -124,7 +128,6 @@ exports.postStaffLeave = async (req, res) => {
       error: message,
     });
   } else {
-    const user = await User.findById("6215385dc20b2a08e7b89e14");
   const leaveLeft = user.annualLeave - totalTime;
 
   User.findById("6215385dc20b2a08e7b89e14")
@@ -176,3 +179,32 @@ exports.postInfo = async (req, res) => {
       console.log(err);
     });
 };
+
+exports.getWork = async (req, res) => {
+  const user = await User.findById("6215385dc20b2a08e7b89e14");
+  const rollcall = await Rollcall.find();
+
+  res.render("work", { pageTitle: "Thông tin công việc", user: user, rollcall: rollcall });
+};
+
+exports.getCovid = async (req, res) => {
+  const user = await User.findById("6215385dc20b2a08e7b89e14");
+
+  res.render("covid", { pageTitle: "Thông tin Covid cá nhân", user: user });
+};
+
+exports.postCovid = async (req, res) => {
+  const bodyTemperature = new BodyTemperature({
+    measureDay: req.body.measureDay,
+    temperature: req.body.temperature,
+    userId: "6215385dc20b2a08e7b89e14"
+  })
+  bodyTemperature
+    .save()
+    .then(result => {
+      res.redirect("/covid");
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
