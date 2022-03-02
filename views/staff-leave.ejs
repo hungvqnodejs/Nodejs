@@ -1,7 +1,7 @@
 <%- include('./includes/head.ejs') %>
 <link rel="stylesheet" href="/css/staff.css">
 <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all">
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all">
 </head>
 <%- include('./includes/navigation.ejs') %>
 
@@ -44,9 +44,15 @@
         </div>
         <br>
         <br>
-      
-        <p class="subheading mb-3">Số ngày xin nghỉ: <%= totalTime.toFixed(0) %></p> 
-        <p class="text-danger"><%= error %> </p>
+        <% if (totalTime > user.annualLeave ){ %>
+            <div class="error-msg">
+                <i class="fa fa-times-circle"></i>
+                <%= error %>
+              </div>
+        <% } else { %>
+            <p class="subheading mb-3">Số ngày xin nghỉ: <%= totalTime.toFixed(0) %></p> 
+        <% } %>
+        
         <p class="subheading mb-3">Số ngày nghỉ phép còn lại <%= user.annualLeave %></p>
         
     </div>

@@ -1,7 +1,8 @@
 <%- include('./includes/head.ejs') %>
 <link rel="stylesheet" href="/css/staff.css">
 <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all">
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/smoothness/jquery-ui.css" media="all">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <%- include('./includes/navigation.ejs') %>
 
@@ -23,8 +24,9 @@
               </h2>
               <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                 <form action="/covid" method="POST">
-                <div class="accordion-body"><div class="row g-5">
-                  
+                <div class="accordion-body">
+                  <div class="row g-5">
+                  <% if (bodyTemperature.length === 0){ %>
                     <div class="col-md-4">
                       <label for="measureDay" class="form-label">Ngày do thân nhiệt</label>
                       <input type="text" class="form-control datetimepicker" name="measureDay" placeholder="" required>
@@ -44,7 +46,15 @@
                     <div class="col-md-3">
                       <button class="btn btn-primary sendleave" type="submit">Gửi thông tin</button>   
                    </div>
-                  
+                   <% }else { %>
+                    <div class="success-msg accordion-body">
+                    <br> 
+                      <i class="fa-solid fa-circle-check"></i>
+                      Đăng ký thông tin thân nhiệt thành công <br>
+
+                    </div>
+                  <% } %>
+                  </div>
                 </div>
                 </form>  
               </div>
@@ -56,13 +66,20 @@
                 </button>
               </h2>
               <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                <form action="/covid" method="POST">
+                <% if(disabledVaccine2){ %>
+                  <div class="success-msg accordion-body">
+                    <i class="fa-solid fa-circle-check"></i>
+                    Đã tiêm cả 2 mũi <br>
+
+           </div>
+                <% } else { %>
                 <div class="accordion-body"><div class="row g-5">
                   <div class="col-md-2">
                     <label for="country" class="form-label">Mũi Tiêm</label>
-                    <select class="form-select" id="country" required>
-                      <option value="Mũi 1">Mũi 1</option>
-                      <option value="Mũi 2">Mũi 2</option>
-                      <option value="Mũi 3">Mũi 3</option>
+                    <select class="form-select" name="injection" required>
+                      <option value="mui1" <%= disabledVaccine %> >Mũi 1</option>
+                      <option value="mui2" <%= disabledVaccine2 %>>Mũi 2</option>
                     </select>
                     <div class="invalid-feedback">
                       Hãy chọn mũi tiêm
@@ -71,8 +88,8 @@
       
                   <div class="col-md-3">
                     <label for="vaccine" class="form-label">Loại vaccine</label>
-                    <select class="form-select" name="vaccine" required>
-                      <option value="" >Hãy chọn loại vaccine</option>
+                    <select class="form-select" name="vaccineType" required>
+                      <option value="" selected disabled>Hãy chọn loại vaccine</option>
                       <option value="Vero Cell">Vero Cell</option>
                       <option value="AstraZeneca">AstraZeneca</option>
                       <option value="Pfize">Pfize</option>
@@ -86,7 +103,7 @@
       
                   <div class="col-md-4">
                     <label for="zip" class="form-label">Ngày tiêm</label>
-                    <input type="text" class="form-control datetimepicker" name="ngayTiem" placeholder="" required>
+                    <input type="text" class="form-control datetimepicker" name="vaccineDay" placeholder="" required>
                     <div class="invalid-feedback">
                       Hãy chọn ngày tiêm
                     </div>
@@ -95,23 +112,33 @@
                   <div class="col-md-3">
                     <button class="btn btn-primary sendleave" type="submit">Gửi thông tin</button>   
                  </div>
-
+                 <% if (disabledVaccine) { %>
+                 <div class="success-msg accordion-body">
+                          <i class="fa-solid fa-circle-check"></i>
+                          Đã tiêm Mũi 1 <br>
+    
+                 </div>
+                 <% } %>
                 </div>
+                <% } %>  
+              </form>
                 </div>
               </div>
-            </div>
-            <div class="accordion-item">
+            
+            <div class="accordion-item">          
               <h2 class="accordion-header" id="flush-headingThree">
                 <button class="accordion-button collapsed subheading" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
                     Đăng ký thông tin dương tính với covid
                 </button>
               </h2>
               <div id="flush-collapseThree" class="accordion-collapse collapse " aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                <% if (covid.length === 0){ %>
                 <div class="accordion-body textbold">Anh /chị hãy điền thông tin vào mẫu dưới đây: </div>
-
+                <form action="/covid" method="POST">
+                  
                 <div class="accordion-body">Trong vòng 14 ngày qua, Anh/Chị có đến quốc gia/vùng lãnh thổ nào (Có thể đi qua nhiều quốc gia):  </div>
                 <div>
-                  <textarea class="form-control" name="reason" type="text" style="height: 10rem"></textarea>
+                  <textarea class="form-control" name="arrive" type="text" style="height: 10rem"></textarea>
                 </div>
 
                 <div class="accordion-body">Trong vòng 14 ngày qua, Anh/Chị có thấy xuất hiện dấu hiệu nào sau đây không?   </div>
@@ -120,55 +147,56 @@
                   <div class="d-flex gap-5">
                     <div class="list-group mx-0">
                       <label class="list-group-item d-flex gap-2">
-                        <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                        <input class="form-check-input flex-shrink-0" type="checkbox" name ="symptom" value="Ho">
                         <span>
                           Ho
                         </span>
                       </label>
                       <label class="list-group-item d-flex gap-2">
-                        <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                        <input class="form-check-input flex-shrink-0" type="checkbox" name ="symptom" value="Sốt">
                         <span>
                           Sốt
                         </span>
                       </label>
                       <label class="list-group-item d-flex gap-2">
-                        <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                        <input class="form-check-input flex-shrink-0" type="checkbox" name ="symptom" value="Khó thở">
                         <span>
                           Khó thở
                         </span>
                       </label>
                       <label class="list-group-item d-flex gap-2">
-                        <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                        <input class="form-check-input flex-shrink-0" type="checkbox" name ="symptom" value="Viêm phổi">
                         <span>
                           Viêm phổi
                         </span>
                       </label>
                       <label class="list-group-item d-flex gap-2">
-                        <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                        <input class="form-check-input flex-shrink-0" type="checkbox" name ="symptom" value="Mệt mỏi">
                         <span>
                           Mệt mỏi
                         </span>
                       </label>
                     </div>
+                  
               </div>
               <div class="accordion-body">Trong vòng 14 ngày qua, Anh/Chị có tiếp xúc với : </div>
 
               <div class="d-flex gap-5">
                 <div class="list-group mx-0">
                   <label class="list-group-item d-flex gap-2">
-                    <input class="form-check-input flex-shrink-0" type="checkbox" value="" >
+                    <input class="form-check-input flex-shrink-0" type="checkbox" name="contact" value="Người bệnh hoặc nghi ngờ, mắc bệnh COVID-19 " >
                     <span>
                       Người bệnh hoặc nghi ngờ, mắc bệnh COVID-19 
                     </span>
                   </label>
                   <label class="list-group-item d-flex gap-2">
-                    <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                    <input class="form-check-input flex-shrink-0" type="checkbox"  name="contact" value="Người từ nước có bệnh COVID-19 ">
                     <span>
                       Người từ nước có bệnh COVID-19 
                     </span>
                   </label>
                   <label class="list-group-item d-flex gap-2">
-                    <input class="form-check-input flex-shrink-0" type="checkbox" value="">
+                    <input class="form-check-input flex-shrink-0" type="checkbox" name="contact" value="Người có biểu hiện (Sốt, ho, khó thở, Viêm phổi)">
                     <span>
                       Người có biểu hiện (Sốt, ho, khó thở, Viêm phổi) 
                     </span>
@@ -177,13 +205,30 @@
                 </div>
                 
           </div>
-          <div class="col-md-3 justify-content-center">
+          <div class="col-md-3">
             <button class="btn btn-primary sendleave" type="submit">Gửi thông tin</button>   
          </div>
             </div>
+          </form>
+
           </div>
+          <% } else { %>
+            <div class="success-msg accordion-body">
+              <i class="fa-solid fa-circle-check"></i>
+              Đăng ký thông tin thành công
+            </div>
+          <% } %> 
+    
+        
+        
+        
+          
+    
+        </div>
+      
+        </div>
     </div>
-</section>
+  </section>
 
 
 

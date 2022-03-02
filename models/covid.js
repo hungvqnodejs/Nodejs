@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const bodyTemperatureSchema = new Schema({
-  measureDay: Date,
-  temperature: Number,
-
+const covidSchema = new Schema({
+  arrive: String,
+  symptom: [String],
+  contact: [String],
   userId: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -13,4 +13,4 @@ const bodyTemperatureSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model("BodyTemperature", bodyTemperatureSchema);
+module.exports = mongoose.model("Covid", covidSchema);

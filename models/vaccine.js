@@ -2,9 +2,10 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const bodyTemperatureSchema = new Schema({
-  measureDay: Date,
-  temperature: Number,
+const vaccineSchema = new Schema({
+  injection: String,
+  vaccineType: String,
+  vaccineDay: Date,
 
   userId: {
     type: Schema.Types.ObjectId,
@@ -13,4 +14,4 @@ const bodyTemperatureSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model("BodyTemperature", bodyTemperatureSchema);
+module.exports = mongoose.model("Vaccine", vaccineSchema);

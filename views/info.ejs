@@ -12,17 +12,53 @@
         <hr>
         <br>
         <br>
-        <h4 class="subheading mb-0">Ngày sinh: </h4> <p><%= user.doB.toLocaleDateString() %></p>
-        <h4 class="subheading mb-0">Hệ số lương: </h4> <p><%= user.salaryScale %></p>
-        <h4 class="subheading mb-0">Ngày vào công ty: </h4> <p><%= user.startDate.toLocaleDateString()  %></p>
-        <h4 class="subheading mb-0">Phòng ban: </h4> <p><%= user.department  %></p>
-        <h4 class="subheading mb-0">Ngày nghỉ phép: </h4> <p><%= user.annualLeave  %></p>
-        <h4 class="subheading mb-0">
-            <form action="/info" method="POST">Ảnh đại diện
-                <input type="text" value="" name="image">
-                <button class="btn btn-primary" type="submit">Chỉnh sửa</button>     
-        </h4>       
+        
+        <div class="col-md-7 col-lg-8">
+            <div class="needs-validation" novalidate>
+              <div class="row g-3">
+                <div class="col-12">
+                  <label for="doB" class="form-label">Ngày sinh</label>
+                  <input type="email" class="form-control" name="doB" placeholder="<%= user.doB.toLocaleDateString() %>" disabled>
+                </div>
+    
+                <div class="col-12">
+                  <label for="salaryScale" class="form-label">Hệ số lương</label>
+                  <input type="text" class="form-control" name="salaryScale" placeholder="<%= user.salaryScale %>" disabled>
+                </div>
+    
+                <div class="col-12">
+                  <label for="startDate" class="form-label">Ngày vào công ty</label>
+                  <input type="text" class="form-control" name="startDate" placeholder="<%= user.department  %>" disabled>
+                </div>
+
+                <div class="col-12">
+                    <label for="department" class="form-label">Phòng ban</label>
+                    <input type="text" class="form-control" name="department" placeholder="<%= user.startDate.toLocaleDateString() %>" disabled>
+                </div>
+
+                <div class="col-12">
+                    <label for="annualLeave" class="form-label">Ngày nghỉ phép</label>
+                    <input type="text" class="form-control" name="annualLeave" placeholder="<%= user.annualLeave  %>" disabled>
+                  </div>
+      
+                <form class="card p-2" action="/info" method="POST">
+                    <label for="state" class="form-label">Ảnh đại diện</label>
+                    <div class="input-group">                     
+                      <input type="text" class="form-control" value="" placeholder="Link" name="image">
+                      <button type="submit" class="btn btn-primary">Chỉnh sửa</button>
+                    </div>
+                </form>
+               
+              </div>
+   
+            </div>
+        </div> 
+
+
     </div>
+
+
+    
 </section>
 
 <script src="/js/staff.js"></script>
