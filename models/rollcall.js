@@ -18,6 +18,9 @@ const rollcallSchema = new Schema({
   timework: {
     type: Number
   },
+  overTime: {
+    type: Number
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',

@@ -51,10 +51,8 @@ exports.getStaffEnd = async (req, res) => {
   var timework = 0;
   for (i = 0; i < rollcall.length; i++) {
     timework +=
-      (Date.parse(rollcall[i].endTime) - Date.parse(rollcall[i].startTime)) /
-      1000;
+      (Date.parse(rollcall[i].endTime) - Date.parse(rollcall[i].startTime))/1000
   }
-
   res.render("staff-end", {
     pageTitle: "Kết thúc",
     rollcall: rollcall,
@@ -87,7 +85,7 @@ exports.postStaffEnd = async (req, res) => {
 function diff_hours(dt2, dt1) {
   var diff = (dt2.getTime() - dt1.getTime()) / 1000;
   diff /= 60 * 60;
-  return Math.abs(Math.round(diff));
+  return Math.abs(diff).toFixed(1);
 }
 
 exports.getStaffLeave = async (req, res) => {
@@ -180,21 +178,39 @@ exports.postInfo = async (req, res) => {
     });
 };
 
+function escapeRegex(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
 exports.getWork = async (req, res) => {
   const user = await User.findById("6215385dc20b2a08e7b89e14");
   const rollcall = await Rollcall.find();
 
-  res.render("work", {
-    pageTitle: "Thông tin công việc",
-    user: user,
-    rollcall: rollcall,
-  });
+  // search
+  if (req.query.search) {
+    const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+    Rollcall.find({ workplace: regex }, function(err, foundjobs) {
+        if(err) {
+            console.log(err);
+        } else {
+          res.render("work", {
+            pageTitle: "Thông tin công việc",
+            user: user,
+            rollcall: rollcall
+          });
+        }
+    }); 
+ }
+ 
+  
 };
 
 exports.getCovid = async (req, res) => {
   const user = await User.findById("6215385dc20b2a08e7b89e14");
   const bodyTemperature = await BodyTemperature.find();
   const covid = await Covid.find();
+
+  // Điều kiện chọn mũi 1 - mũi 2
   const existsVaccine = await Vaccine.findOne({ injection: "mui1" });
   const existsVaccine2 = await Vaccine.findOne({ injection: "mui2" });
   let disabledVaccine = null;
