@@ -184,24 +184,22 @@ function escapeRegex(text) {
 
 exports.getWork = async (req, res) => {
   const user = await User.findById("6215385dc20b2a08e7b89e14");
-  const rollcall = await Rollcall.find();
-
-  // search
-  if (req.query.search) {
-    const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-    Rollcall.find({ workplace: regex }, function(err, foundjobs) {
-        if(err) {
-            console.log(err);
-        } else {
-          res.render("work", {
-            pageTitle: "Thông tin công việc",
-            user: user,
-            rollcall: rollcall
-          });
-        }
-    }); 
- }
  
+  // search
+//   if (req.query.search) {
+//     const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+//     Rollcall.find({ workplace: regex }, (err, foundjobs) => {
+//         if(err) {
+//             console.log(err);
+//         } else {
+//           res.render("work", {
+//             pageTitle: "Thông tin công việc",
+//             user: user,
+//             rollcall: foundjobs
+//           });
+//         }
+//     }); 
+//  }
   
 };
 
