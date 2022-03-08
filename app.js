@@ -7,7 +7,7 @@ const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
-const multer = require('multer')
+const multer = require('multer');
 
 const errorController = require('./controllers/error');
 const User = require('./models/user');
@@ -20,17 +20,28 @@ const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions'
 });
-
 const csrfProtection = csrf();
 
-const fileStorage =  multer.diskStorage({
+const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'images');
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().toISOString() + '-' + file.originalname);
+    cb(null, file.originalname);
   }
-})
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
@@ -40,7 +51,9 @@ const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ storage: fileStorage }).single('image'))
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
   session({
@@ -60,18 +73,17 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  // throw new Error(' Sync Dummy')
+  // throw new Error('Sync Dummy');
   if (!req.session.user) {
     return next();
   }
   User.findById(req.session.user._id)
     .then(user => {
-
       if (!user) {
         return next();
       }
       req.user = user;
-      next()
+      next();
     })
     .catch(err => {
       next(new Error(err));
@@ -92,7 +104,7 @@ app.use((error, req, res, next) => {
     path: '/500',
     isAuthenticated: req.session.isLoggedIn
   });
-})
+});
 
 mongoose
   .connect(MONGODB_URI)
