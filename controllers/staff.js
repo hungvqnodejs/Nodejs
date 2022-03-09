@@ -44,20 +44,29 @@ exports.postStaffRollcall = async (req, res) => {
     });
 };
 
+// Hàm tình giờ ( thời gian kết thúc - thời gian bắt đầu)
+function diff_hours(dt2, dt1) {
+  var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+  diff /= 60 * 60;
+  return Math.abs(diff).toFixed(1);
+}
+
 exports.getStaffEnd = async (req, res) => {
   const user = await User.findById("6215385dc20b2a08e7b89e14");
   const rollcall = await Rollcall.find();
+
   var i = 0;
-  var timework = 0;
+  var totaltimework = 0;
   for (i = 0; i < rollcall.length; i++) {
-    timework +=
-      (Date.parse(rollcall[i].endTime) - Date.parse(rollcall[i].startTime))/1000
+    totaltimework +=
+      rollcall[i].timework
   }
+
   res.render("staff-end", {
     pageTitle: "Kết thúc",
     rollcall: rollcall,
     user: user,
-    timework,
+    totaltimework,
   });
 };
 
@@ -81,17 +90,10 @@ exports.postStaffEnd = async (req, res) => {
     });
 };
 
-// Hàm tình giờ ( thời gian kết thúc - thời gian bắt đầu)
-function diff_hours(dt2, dt1) {
-  var diff = (dt2.getTime() - dt1.getTime()) / 1000;
-  diff /= 60 * 60;
-  return Math.abs(diff).toFixed(1);
-}
-
 exports.getStaffLeave = async (req, res) => {
   const user = await User.findById("6215385dc20b2a08e7b89e14");
-  const annualLeave = await AnnualLeave.find();
 
+  const annualLeave = await AnnualLeave.find();
   const totalTime = annualLeave
     .map((item) => item.totalTime)
     .reduce((prev, curr) => prev + curr, 0);
@@ -108,10 +110,12 @@ exports.postStaffLeave = async (req, res) => {
   const startLeave = moment(req.body.startLeave, "hh:mm DD/MM/YYYY").toDate();
   const endLeave = moment(req.body.endLeave, "hh:mm DD/MM/YYYY").toDate();
   const user = await User.findById("6215385dc20b2a08e7b89e14");
-  let totalTime = diff_hours(endLeave, startLeave);
+  let totalTime = diff_hours(endLeave, startLeave); // số giờ xin nghỉ phép
 
-  if (totalTime < 24) {
-    totalTime = totalTime / 8;
+  if(totalTime <= 8){  
+    totalTime = totalTime / 8 
+  } else if(totalTime > 8 && totalTime <= 24) {
+    totalTime = 1;
   } else {
     totalTime = totalTime / 24;
   }
@@ -131,7 +135,6 @@ exports.postStaffLeave = async (req, res) => {
     User.findById("6215385dc20b2a08e7b89e14")
       .then((user) => {
         user.annualLeave = leaveLeft;
-        console.log(user);
         return user.save();
       })
       .catch((err) => {
@@ -167,7 +170,6 @@ exports.postInfo = async (req, res) => {
   User.findById("6215385dc20b2a08e7b89e14")
     .then((user) => {
       user.Image = Image;
-      console.log(user);
       return user.save();
     })
     .then((result) => {
@@ -178,28 +180,49 @@ exports.postInfo = async (req, res) => {
     });
 };
 
-function escapeRegex(text) {
-  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-};
-
 exports.getWork = async (req, res) => {
   const user = await User.findById("6215385dc20b2a08e7b89e14");
- 
+  const rollcall = await Rollcall.find();
+
+  // số giờ xin nghỉ phép
+  const annualLeave = await AnnualLeave.find();
+  const totalannualLeave = annualLeave
+    .map((item) => item.totalTime)
+    .reduce((prev, curr) => prev + curr, 0);
+
+  // Số giờ đã làm trong ngày
+  var i = 0;
+  var totaltimework = 0;
+  for (i = 0; i < rollcall.length; i++) {
+    totaltimework +=
+      rollcall[i].timework
+  }
+
+  const overTime =  totaltimework - 8 // Số giờ tăng ca hoặc thiếu giờ làm
+
+ const salary = user.salaryScale*3000000 + overTime*200000
+
   // search
-//   if (req.query.search) {
-//     const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-//     Rollcall.find({ workplace: regex }, (err, foundjobs) => {
-//         if(err) {
-//             console.log(err);
-//         } else {
-//           res.render("work", {
-//             pageTitle: "Thông tin công việc",
-//             user: user,
-//             rollcall: foundjobs
-//           });
-//         }
-//     }); 
-//  }
+  const k = req.query.k
+  if (req.query.search) {    
+      Rollcall.find({
+        [k] : req.query.search
+      }).then((rollcall) => {
+        res.render("work", {
+          pageTitle: "Thông tin công việc",
+          user: user,
+          rollcall: rollcall,
+          salary
+        });
+      });    
+  } else {
+    res.render("work", {
+      pageTitle: "Thông tin công việc",
+      user: user,
+      rollcall: rollcall,
+      salary
+    });
+  }
   
 };
 

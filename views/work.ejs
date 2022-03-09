@@ -13,8 +13,24 @@
 
         <hr>
         <br>
-        <form class="col-12 col-lg-4 mb-3 mb-lg-0 me-lg-3" action="/work" method="GET">
-          <input type="search" class="form-control form-control-dark" placeholder="Tìm kiếm ..." aria-label="Search" name="search">
+        <form class="col-12 col-lg-6 mb-3 mb-lg-0 me-lg-3" action="/work" method="GET">
+          <div class="accordion-body">
+            <div class="row g-5">
+              <div class="col-md-6">
+                <select class="form-select" name="k" required>
+                  <option value="startTime" >Ngày</option>
+                  <option value="workplace" >Nơi làm việc </option>
+                  <option value="timework" >Tổng giờ làm</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <input type="search" class="form-control form-control-dark" placeholder="Tìm kiếm ..." aria-label="Search" name="search">
+              </div>
+
+            </div>
+          </div>  
+         
         </form>
         <br>
         <table class="table table-bordered">
@@ -39,6 +55,6 @@
                 <% } %>
             </tbody>
           </table>
-  
+          <p class="lead">Lương hiện tại <%= salary %></p>
 </section>
 <%- include('./includes/end.ejs') %>
