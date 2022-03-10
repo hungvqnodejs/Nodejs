@@ -1,0 +1,65 @@
+<%- include('./includes/head.ejs') %>
+<link rel="stylesheet" href="/css/staff.css">
+</head>
+<%- include('./includes/navigation.ejs') %>
+
+<section class="resume-section" id="about">
+    <div class="resume-section-content">
+        <h1 class="mb-0">
+            Mr. 
+            <span class="text-primary">Ken</span>
+        </h1>
+        <hr>
+        <br>
+        <br>
+        
+        <div class="col-md-7 col-lg-8">
+            <div class="needs-validation" novalidate>
+              <div class="row g-3">
+                <div class="col-12">
+                  <label for="doB" class="form-label">Ngày sinh</label>
+                  <input type="email" class="form-control" name="doB" placeholder="<%= user.doB.toLocaleDateString() %>" disabled>
+                </div>
+    
+                <div class="col-12">
+                  <label for="salaryScale" class="form-label">Hệ số lương</label>
+                  <input type="text" class="form-control" name="salaryScale" placeholder="<%= user.salaryScale %>" disabled>
+                </div>
+    
+                <div class="col-12">
+                  <label for="startDate" class="form-label">Ngày vào công ty</label>
+                  <input type="text" class="form-control" name="startDate" placeholder="<%= user.department  %>" disabled>
+                </div>
+
+                <div class="col-12">
+                    <label for="department" class="form-label">Phòng ban</label>
+                    <input type="text" class="form-control" name="department" placeholder="<%= user.startDate.toLocaleDateString() %>" disabled>
+                </div>
+
+                <div class="col-12">
+                    <label for="annualLeave" class="form-label">Ngày nghỉ phép</label>
+                    <input type="text" class="form-control" name="annualLeave" placeholder="<%= user.annualLeave  %>" disabled>
+                  </div>
+      
+                <form class="card p-2" action="/info" method="POST">
+                    <label for="state" class="form-label">Ảnh đại diện</label>
+                    <div class="input-group">                     
+                      <input type="text" class="form-control" value="" placeholder="Link" name="image">
+                      <button type="submit" class="btn btn-primary">Chỉnh sửa</button>
+                    </div>
+                </form>
+               
+              </div>
+   
+            </div>
+        </div> 
+
+
+    </div>
+
+
+    
+</section>
+
+<script src="/js/staff.js"></script>
+<%- include('./includes/end.ejs') %>

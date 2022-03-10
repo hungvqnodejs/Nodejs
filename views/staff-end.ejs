@@ -1,0 +1,40 @@
+<%- include('./includes/head.ejs') %>
+<link rel="stylesheet" href="/css/staff.css">
+</head>
+<%- include('./includes/navigation.ejs') %>
+
+<section class="resume-section" id="about">
+    <div class="resume-section-content">
+        <h1 class="mb-0">
+            Mr. 
+            <span class="text-primary">KEN</span>
+        </h1>
+        <br>
+        <p>Offine    <i class="bi bi-circle-fill text-Secondary"></i></p>
+        <br>
+        <p class="lead">Hôm nay bạn đã làm được <%= totaltimework %> Giờ</p>
+
+        <table class="table">
+            <thead class="thead-dark">
+              <tr>               
+                <th scope="col">Workplace</th>
+                <th scope="col">Start time</th>
+                <th scope="col">End time</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (let item of rollcall) { %>
+              <tr>             
+                <td><%= item.workplace %></td>
+                <td><%= item.startTime.toLocaleString() %></td>
+                <td><%= item.endTime.toLocaleString() %></td>
+              </tr>
+
+              <% } %>
+            </tbody>
+          </table>    
+    </div>
+</section>
+
+<script src="/js/staff.js"></script>
+<%- include('./includes/end.ejs') %>

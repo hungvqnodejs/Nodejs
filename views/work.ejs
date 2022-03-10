@@ -1,0 +1,59 @@
+<%- include('./includes/head.ejs') %>
+<link rel="stylesheet" href="/css/staff.css">
+<link rel="stylesheet" href="/css/main.css">
+
+</head>
+<%- include('./includes/navigation.ejs') %>
+<section class="resume-section" id="about">
+    <div class="resume-section-content">
+        <h1 class="mb-0">
+            Mr. 
+            <span class="text-primary"> <%= user.name %></span>
+        </h1>
+
+        <hr>
+        <br>
+        <form class="col-12 col-lg-6 mb-3 mb-lg-0 me-lg-3" action="/work" method="GET">
+          <div class="accordion-body">
+            <div class="row g-5">
+              <div class="col-md-5">
+                <select class="form-select" name="k" required>
+                  <option value="workplace" >Nơi làm việc </option>
+                  <option value="timework" >Tổng giờ làm</option>
+                </select>
+              </div>
+
+              <div class="col-md-7">
+                <input type="search" class="form-control form-control-dark" placeholder="Tìm kiếm ..." aria-label="Search" name="search">
+              </div>
+
+            </div>
+          </div>  
+         
+        </form>
+        <br>
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Ngày</th>
+                <th scope="col">Giờ bắt đầu</th>
+                <th scope="col">Giờ kết thúc</th>
+                <th scope="col">Nơi làm việc</th>     
+                <th scope="col">Tổng số giờ đã làm</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% for (let item of rollcall) { %>
+              <tr>
+                <th scope="row"><%= item.startTime.toLocaleDateString() %></th>
+                <td><%= item.startTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) %></td>
+                <td><%= item.endTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) %></td>
+                <td><%= item.workplace %></td>
+                <td><%= item.timework %></td>
+              </tr>
+                <% } %>
+            </tbody>
+          </table>
+          <p class="lead">Lương hiện tại <%= salary %></p>
+</section>
+<%- include('./includes/end.ejs') %>

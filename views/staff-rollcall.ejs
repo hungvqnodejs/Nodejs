@@ -1,0 +1,25 @@
+<%- include('./includes/head.ejs') %>
+<link rel="stylesheet" href="/css/staff.css">
+</head>
+<%- include('./includes/navigation.ejs') %>
+
+<section class="resume-section" id="about">
+    <div class="resume-section-content">
+        <h1 class="mb-0">
+            Mr. 
+            <span class="text-primary"> Ken</span>
+        </h1>
+        <br>
+        <p>Online    <i class="bi bi-circle-fill text-success"></i></p>
+        <br>
+        <p class="lead">Bắt đầu làm việc tại công ty vào lúc <%= rollcall.startTime.toLocaleString() %></p>
+        <form action="/staff-end/<%= rollcall._id %>" method="POST">
+        <input type="hidden" value="" name="staff-end">
+                <button class="btn btn-primary btn-xl" type="submit">KẾT THÚC</button>
+        </form>
+        
+    </div>
+</section>
+
+<script src="/js/staff.js"></script>
+<%- include('./includes/end.ejs') %>
