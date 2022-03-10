@@ -4,7 +4,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const routes = require('./routes/staff');
+const authRoutes = require('./routes/auth');
+
 const errorController = require('./controllers/error');
+
+
 
 const User = require('./models/user');
 
@@ -15,6 +19,7 @@ app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(authRoutes);
 app.use('/', routes)
 app.use(errorController.get404);
 
