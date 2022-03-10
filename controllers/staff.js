@@ -180,15 +180,13 @@ exports.postInfo = async (req, res) => {
     });
 };
 
+function escapeRegex(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
 exports.getWork = async (req, res) => {
   const user = await User.findById("6215385dc20b2a08e7b89e14");
   const rollcall = await Rollcall.find();
-
-  // số giờ xin nghỉ phép
-  const annualLeave = await AnnualLeave.find();
-  const totalannualLeave = annualLeave
-    .map((item) => item.totalTime)
-    .reduce((prev, curr) => prev + curr, 0);
 
   // Số giờ đã làm trong ngày
   var i = 0;
@@ -204,6 +202,7 @@ exports.getWork = async (req, res) => {
 
   // search
   const k = req.query.k
+
   if (req.query.search) {    
       Rollcall.find({
         [k] : req.query.search
