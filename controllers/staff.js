@@ -7,21 +7,22 @@ const Covid = require("../models/covid");
 const moment = require("moment");
 
 exports.homepage = async (req, res) => {
-  res.render("index", { pageTitle: "Trang chủ" });
+  res.render("index", { pageTitle: "Trang chủ", isAuthenticated: req.session.isLoggedIn });
 };
 
 exports.getStaff = async (req, res) => {
-  const user = await User.findById("622a39cc77623164fa38e577");
-  res.render("staff", { pageTitle: "Nhân viên", user: user });
+  const user = await User.findById(req.session.user._id)
+  res.render("staff", { pageTitle: "Nhân viên", user: user, isAuthenticated: req.session.isLoggedIn });
 };
 
 exports.getStaffRollcall = async (req, res) => {
-  const user = await User.findById("622a39cc77623164fa38e577");
+  const user = await User.findById(req.session.user._id)
   const rollcall = await Rollcall.findById(req.params.rollcallId);
   res.render("staff-rollcall", {
     pageTitle: "Điểm danh",
     rollcall: rollcall,
     user: user,
+    isAuthenticated: req.session.isLoggedIn
   });
 };
 
@@ -31,12 +32,12 @@ exports.postStaffRollcall = async (req, res) => {
     workplace: req.body.workplace,
     startTime: startTime,
     endTime: "",
-    userId: "622a39cc77623164fa38e577",
+    userId: req.user,
   });
   rollcall
     .save()
     .then((result) => {
-      console.log(result);
+      console.log(result,'result');
       res.redirect(`staff-rollcall/${result._id}`);
     })
     .catch((err) => {
@@ -52,7 +53,7 @@ function diff_hours(dt2, dt1) {
 }
 
 exports.getStaffEnd = async (req, res) => {
-  const user = await User.findById("622a39cc77623164fa38e577");
+  const user = await User.findById(req.session.user._id)
   const rollcall = await Rollcall.find();
 
   var i = 0;
@@ -67,6 +68,7 @@ exports.getStaffEnd = async (req, res) => {
     rollcall: rollcall,
     user: user,
     totaltimework,
+    isAuthenticated: req.session.isLoggedIn
   });
 };
 
@@ -91,7 +93,7 @@ exports.postStaffEnd = async (req, res) => {
 };
 
 exports.getStaffLeave = async (req, res) => {
-  const user = await User.findById("622a39cc77623164fa38e577");
+  const user = await User.findById(req.session.user._id)
 
   const annualLeave = await AnnualLeave.find();
   const totalTime = annualLeave
@@ -103,13 +105,14 @@ exports.getStaffLeave = async (req, res) => {
     user: user,
     totalTime: totalTime,
     error: "",
+    isAuthenticated: req.session.isLoggedIn
   });
 };
 
 exports.postStaffLeave = async (req, res) => {
   const startLeave = moment(req.body.startLeave, "hh:mm DD/MM/YYYY").toDate();
   const endLeave = moment(req.body.endLeave, "hh:mm DD/MM/YYYY").toDate();
-  const user = await User.findById("622a39cc77623164fa38e577");
+  const user = await User.findById(req.session.user._id)
   let totalTime = diff_hours(endLeave, startLeave); // số giờ xin nghỉ phép
 
   if(totalTime <= 8){  
@@ -132,7 +135,7 @@ exports.postStaffLeave = async (req, res) => {
   } else {
     const leaveLeft = user.annualLeave - totalTime;
 
-    User.findById("622a39cc77623164fa38e577")
+    User.findById(req.session.user._id)
       .then((user) => {
         user.annualLeave = leaveLeft;
         return user.save();
@@ -146,7 +149,7 @@ exports.postStaffLeave = async (req, res) => {
       endLeave: endLeave,
       totalTime,
       reason: req.body.reason,
-      userId: "622a39cc77623164fa38e577",
+      userId: req.user,
     });
     annualLeave
       .save()
@@ -161,13 +164,13 @@ exports.postStaffLeave = async (req, res) => {
 };
 
 exports.getInfo = async (req, res) => {
-  const user = await User.findById("622a39cc77623164fa38e577");
-  res.render("info", { pageTitle: "Thông tin cá nhân", user: user });
+  const user = await User.findById(req.session.user._id)
+  res.render("info", { pageTitle: "Thông tin cá nhân", user: user, isAuthenticated: req.session.isLoggedIn });
 };
 
 exports.postInfo = async (req, res) => {
   const Image = req.body.image;
-  User.findById("622a39cc77623164fa38e577")
+  User.findById(req.session.user._id)
     .then((user) => {
       user.Image = Image;
       return user.save();
@@ -180,12 +183,8 @@ exports.postInfo = async (req, res) => {
     });
 };
 
-function escapeRegex(text) {
-  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-};
-
 exports.getWork = async (req, res) => {
-  const user = await User.findById("622a39cc77623164fa38e577");
+  const user = await User.findById(req.session.user._id)
   const rollcall = await Rollcall.find();
 
   // Số giờ đã làm trong ngày
@@ -211,7 +210,8 @@ exports.getWork = async (req, res) => {
           pageTitle: "Thông tin công việc",
           user: user,
           rollcall: rollcall,
-          salary
+          salary, 
+          isAuthenticated: req.session.isLoggedIn
         });
       });    
   } else {
@@ -219,14 +219,16 @@ exports.getWork = async (req, res) => {
       pageTitle: "Thông tin công việc",
       user: user,
       rollcall: rollcall,
-      salary
+      salary, 
+      isAuthenticated: req.session.isLoggedIn
+      
     });
   }
   
 };
 
 exports.getCovid = async (req, res) => {
-  const user = await User.findById("622a39cc77623164fa38e577");
+  const user = await User.findById(req.session.user._id)
   const bodyTemperature = await BodyTemperature.find();
   const covid = await Covid.find();
 
@@ -253,6 +255,7 @@ exports.getCovid = async (req, res) => {
     covid: covid,
     disabledVaccine: disabledVaccine,
     disabledVaccine2: disabledVaccine2,
+    isAuthenticated: req.session.isLoggedIn
   });
 };
 
@@ -261,7 +264,7 @@ exports.postCovid = async (req, res) => {
     const bodyTemperature = new BodyTemperature({
       measureDay: req.body.measureDay,
       temperature: req.body.temperature,
-      userId: "622a39cc77623164fa38e577",
+      userId: req.session.user,
     });
     bodyTemperature
       .save()

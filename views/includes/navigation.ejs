@@ -6,11 +6,15 @@
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav">
+            <% if (isAuthenticated) { %>
             <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/staff">Điểm danh</a></li>
             <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/info">Hồ Sơ</a></li>
             <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/work">Công việc</a></li>
             <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/covid">Tiêm chủng Covid</a></li>
-            <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/logout">Đăng xuất</a></li>
+            <form  action="/logout" method="POST">
+            <li class="nav-item"><button class="btn btn-primary btn-xl logoutbutton" type="submit" >Đăng xuất</button></li>
+            </form>
+            <% } %>
         </ul>
     </div>
 </nav>

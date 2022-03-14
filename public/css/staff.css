@@ -70,6 +70,13 @@
   box-sizing: border-box;
 }
 
+.logoutbutton{
+  color: rgba(255, 255, 255, 0.55) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth;
