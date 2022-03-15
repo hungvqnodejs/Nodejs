@@ -32,7 +32,7 @@ exports.postStaffRollcall = async (req, res) => {
     workplace: req.body.workplace,
     startTime: startTime,
     endTime: "",
-    userId: req.user,
+    userId: req.session.user
   });
   rollcall
     .save()
@@ -54,7 +54,7 @@ function diff_hours(dt2, dt1) {
 
 exports.getStaffEnd = async (req, res) => {
   const user = await User.findById(req.session.user._id)
-  const rollcall = await Rollcall.find();
+  const rollcall = await Rollcall.find({userId: req.session.user._id});
 
   var i = 0;
   var totaltimework = 0;
@@ -95,7 +95,7 @@ exports.postStaffEnd = async (req, res) => {
 exports.getStaffLeave = async (req, res) => {
   const user = await User.findById(req.session.user._id)
 
-  const annualLeave = await AnnualLeave.find();
+  const annualLeave = await AnnualLeave.find({userId: req.session.user._id});
   const totalTime = annualLeave
     .map((item) => item.totalTime)
     .reduce((prev, curr) => prev + curr, 0);
@@ -149,7 +149,7 @@ exports.postStaffLeave = async (req, res) => {
       endLeave: endLeave,
       totalTime,
       reason: req.body.reason,
-      userId: req.user,
+      userId: req.session.user,
     });
     annualLeave
       .save()
@@ -185,7 +185,7 @@ exports.postInfo = async (req, res) => {
 
 exports.getWork = async (req, res) => {
   const user = await User.findById(req.session.user._id)
-  const rollcall = await Rollcall.find();
+  const rollcall = await Rollcall.find({userId: req.session.user._id});
 
   // Số giờ đã làm trong ngày
   var i = 0;
@@ -229,8 +229,9 @@ exports.getWork = async (req, res) => {
 
 exports.getCovid = async (req, res) => {
   const user = await User.findById(req.session.user._id)
-  const bodyTemperature = await BodyTemperature.find();
-  const covid = await Covid.find();
+  const bodyTemperature = await BodyTemperature.find({userId: req.session.user._id});
+  const covid = await Covid.find({userId: req.session.user._id});
+  const vaccine = await Vaccine.find({userId: req.session.user._id});
 
   // Điều kiện chọn mũi 1 - mũi 2
   const existsVaccine = await Vaccine.findOne({ injection: "mui1" });
@@ -253,6 +254,7 @@ exports.getCovid = async (req, res) => {
     user: user,
     bodyTemperature: bodyTemperature,
     covid: covid,
+    vaccine: vaccine,
     disabledVaccine: disabledVaccine,
     disabledVaccine2: disabledVaccine2,
     isAuthenticated: req.session.isLoggedIn
@@ -264,7 +266,7 @@ exports.postCovid = async (req, res) => {
     const bodyTemperature = new BodyTemperature({
       measureDay: req.body.measureDay,
       temperature: req.body.temperature,
-      userId: req.session.user,
+      userId: req.session.user
     });
     bodyTemperature
       .save()
@@ -280,7 +282,7 @@ exports.postCovid = async (req, res) => {
       injection: req.body.injection,
       vaccineType: req.body.vaccineType,
       vaccineDay: vaccineDay,
-      userId: "6215385dc20b2a08e7b89e14",
+      userId: req.session.user._id
     });
     vaccine
       .save()
@@ -295,7 +297,7 @@ exports.postCovid = async (req, res) => {
       arrive: req.body.arrive,
       symptom: req.body.symptom,
       contact: req.body.contact,
-      userId: "6215385dc20b2a08e7b89e14",
+      userId:  req.session.user._id
     });
     covid
       .save()
