@@ -1,10 +1,11 @@
 const path = require("path");
 
 const express = require("express");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoDbStore = require("connect-mongodb-session")(session);
+const flash = require('connect-flash')
 
 const routes = require("./routes/staff");
 const authRoutes = require("./routes/auth");
@@ -35,9 +36,17 @@ app.use(
     store: store,
   })
 );
+app.use(flash())
 app.use(authRoutes);
 app.use("/", routes);
+app.get('/500', errorController.get500)
 app.use(errorController.get404);
+
+app.use((error, req, res, next) => {
+  res.status(500).render('500', {
+    pageTitle: 'Error', isAuthenticated: req.session.isLoggedIn
+  });
+})
 
 app.use((req, res, next) => {
   if (!req.session.user) {
@@ -45,10 +54,13 @@ app.use((req, res, next) => {
   }
   User.findById(req.session.user._id)
     .then((user) => {
+      if (!user) {
+        return next()
+      }
       req.user = user;
       next();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {next(new Error(err))});
 });
 
 mongoose
@@ -68,9 +80,10 @@ mongoose
     //         user.save()
     //     }
     // })
-
     app.listen(5000);
   })
   .catch((err) => {
-    console.log(err);
+    const error = new Error(err)
+    error.httpStatusCode = 500;
+    return next(error)
   });

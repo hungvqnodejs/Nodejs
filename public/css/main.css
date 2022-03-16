@@ -17,7 +17,7 @@
 
 .success-msg,
 .error-msg {
-  margin: 10px 0;
+  margin: 15px 0 0 0;
   padding: 10px;
   border-radius: 3px 3px 3px 3px;
 }

@@ -7,12 +7,12 @@ const Covid = require("../models/covid");
 const moment = require("moment");
 
 exports.homepage = async (req, res) => {
-  res.render("index", { pageTitle: "Trang chủ", isAuthenticated: req.session.isLoggedIn });
+  res.render("index", { pageTitle: "Trang chủ" });
 };
 
 exports.getStaff = async (req, res) => {
   const user = await User.findById(req.session.user._id)
-  res.render("staff", { pageTitle: "Nhân viên", user: user, isAuthenticated: req.session.isLoggedIn });
+  res.render("staff", { pageTitle: "Nhân viên", user: user });
 };
 
 exports.getStaffRollcall = async (req, res) => {
@@ -22,7 +22,7 @@ exports.getStaffRollcall = async (req, res) => {
     pageTitle: "Điểm danh",
     rollcall: rollcall,
     user: user,
-    isAuthenticated: req.session.isLoggedIn
+
   });
 };
 
@@ -37,11 +37,12 @@ exports.postStaffRollcall = async (req, res) => {
   rollcall
     .save()
     .then((result) => {
-      console.log(result,'result');
       res.redirect(`staff-rollcall/${result._id}`);
     })
     .catch((err) => {
-      console.log(err);
+      const error = new Error(err)
+      error.httpStatusCode = 500;
+      return next(error)
     });
 };
 
@@ -68,7 +69,7 @@ exports.getStaffEnd = async (req, res) => {
     rollcall: rollcall,
     user: user,
     totaltimework,
-    isAuthenticated: req.session.isLoggedIn
+
   });
 };
 
@@ -88,7 +89,9 @@ exports.postStaffEnd = async (req, res) => {
     })
     .then(() => res.redirect("/staff-end"))
     .catch((err) => {
-      console.log(err);
+      const error = new Error(err)
+      error.httpStatusCode = 500;
+      return next(error)
     });
 };
 
@@ -105,7 +108,7 @@ exports.getStaffLeave = async (req, res) => {
     user: user,
     totalTime: totalTime,
     error: "",
-    isAuthenticated: req.session.isLoggedIn
+
   });
 };
 
@@ -141,7 +144,9 @@ exports.postStaffLeave = async (req, res) => {
         return user.save();
       })
       .catch((err) => {
-        console.log(err);
+        const error = new Error(err)
+        error.httpStatusCode = 500;
+        return next(error)
       });
 
     const annualLeave = new AnnualLeave({
@@ -158,14 +163,16 @@ exports.postStaffLeave = async (req, res) => {
         res.redirect("staff-leave");
       })
       .catch((err) => {
-        console.log(err);
+        const error = new Error(err)
+        error.httpStatusCode = 500;
+        return next(error)
       });
   }
 };
 
 exports.getInfo = async (req, res) => {
   const user = await User.findById(req.session.user._id)
-  res.render("info", { pageTitle: "Thông tin cá nhân", user: user, isAuthenticated: req.session.isLoggedIn });
+  res.render("info", { pageTitle: "Thông tin cá nhân", user: user });
 };
 
 exports.postInfo = async (req, res) => {
@@ -179,7 +186,9 @@ exports.postInfo = async (req, res) => {
       res.redirect("/info");
     })
     .catch((err) => {
-      console.log(err);
+      const error = new Error(err)
+      error.httpStatusCode = 500;
+      return next(error)
     });
 };
 
@@ -211,7 +220,7 @@ exports.getWork = async (req, res) => {
           user: user,
           rollcall: rollcall,
           salary, 
-          isAuthenticated: req.session.isLoggedIn
+      
         });
       });    
   } else {
@@ -220,7 +229,7 @@ exports.getWork = async (req, res) => {
       user: user,
       rollcall: rollcall,
       salary, 
-      isAuthenticated: req.session.isLoggedIn
+  
       
     });
   }
@@ -257,7 +266,7 @@ exports.getCovid = async (req, res) => {
     vaccine: vaccine,
     disabledVaccine: disabledVaccine,
     disabledVaccine2: disabledVaccine2,
-    isAuthenticated: req.session.isLoggedIn
+
   });
 };
 

@@ -1,7 +1,13 @@
 const User = require("../models/user");
 
 exports.getLogin = async (req, res) => {
-  res.render("auth/login", { pageTitle: "Login", isAuthenticated: false });
+  let message = req.flash('error')
+  if (message.length > 0) {
+    message = message[0]
+  } else {
+    message = null
+  }
+  res.render("auth/login", { pageTitle: "Login", errorMessage: message });
 };
 
 exports.postLogin = async (req, res) => {
@@ -12,6 +18,7 @@ exports.postLogin = async (req, res) => {
   })
     .then(user => {
       if (!user) {
+        req.flash('error', 'Tài khoàn hoặc mật khẩu không đúng')
         return res.redirect('/login')
       }
         req.session.isLoggedIn = true
