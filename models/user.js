@@ -36,7 +36,7 @@ const userSchema = new Schema({
     type: Number,
     required: true
   },
-  Image: {
+  image: {
     type: String,
   }
 });

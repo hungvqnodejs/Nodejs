@@ -176,10 +176,14 @@ exports.getInfo = async (req, res) => {
 };
 
 exports.postInfo = async (req, res) => {
-  const Image = req.body.image;
+  const image = req.file
+  console.log(image)
   User.findById(req.session.user._id)
     .then((user) => {
-      user.Image = Image;
+      if(image){
+        user.image = image.path;
+      }    
+      console.log(user.image)
       return user.save();
     })
     .then((result) => {

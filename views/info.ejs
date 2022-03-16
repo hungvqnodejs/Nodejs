@@ -41,10 +41,10 @@
                     <input type="text" class="form-control" name="annualLeave" placeholder="<%= user.annualLeave  %>" disabled>
                   </div>
       
-                <form class="card p-2" action="/info" method="POST">
+                <form class="card p-2" action="/info" method="POST" enctype="multipart/form-data">
                     <label for="state" class="form-label">Ảnh đại diện</label>
                     <div class="input-group">                     
-                      <input type="text" class="form-control" value="" placeholder="Link" name="image">
+                      <input type="file" class="form-control" value="" placeholder="Link" name="image">
                       <button type="submit" class="btn btn-primary">Chỉnh sửa</button>
                     </div>
                 </form>
