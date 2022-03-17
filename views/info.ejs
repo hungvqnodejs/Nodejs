@@ -28,12 +28,12 @@
     
                 <div class="col-12">
                   <label for="startDate" class="form-label">Ngày vào công ty</label>
-                  <input type="text" class="form-control" name="startDate" placeholder="<%= user.department  %>" disabled>
+                  <input type="text" class="form-control" name="startDate" placeholder="<%= user.startDate.toLocaleDateString() %>" disabled>
                 </div>
 
                 <div class="col-12">
                     <label for="department" class="form-label">Phòng ban</label>
-                    <input type="text" class="form-control" name="department" placeholder="<%= user.startDate.toLocaleDateString() %>" disabled>
+                    <input type="text" class="form-control" name="department" placeholder="<%= user.department %>" disabled>
                 </div>
 
                 <div class="col-12">

@@ -11,6 +11,10 @@
             <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/info">Hồ Sơ</a></li>
             <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/work">Công việc</a></li>
             <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/covid">Tiêm chủng Covid</a></li>
+            <% if(user.department === "MGR"){ %>
+                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/admin">Quản lý giờ làm</a></li>
+            <% } %>      
+            
             <form  action="/logout" method="POST">
             <li class="nav-item"><button class="btn btn-primary btn-xl logoutbutton" type="submit" >Đăng xuất</button></li>
             </form>

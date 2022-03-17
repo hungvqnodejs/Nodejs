@@ -9,6 +9,7 @@ const flash = require('connect-flash')
 const multer = require('multer')
 
 const routes = require("./routes/staff");
+const AdminRoutes = require('./routes/admin')
 const authRoutes = require("./routes/auth");
 const errorController = require("./controllers/error");
 
@@ -65,6 +66,7 @@ app.use(
 app.use(flash())
 app.use(authRoutes);
 app.use("/", routes);
+app.use(AdminRoutes);
 app.get('/500', errorController.get500)
 app.use(errorController.get404);
 
@@ -86,7 +88,10 @@ app.use((req, res, next) => {
       req.user = user;
       next();
     })
-    .catch((err) => {next(new Error(err))});
+    .catch((err) => {
+      next(new Error(err))
+      console.log(err)
+    });
 });
 
 mongoose

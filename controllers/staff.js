@@ -42,7 +42,9 @@ exports.postStaffRollcall = async (req, res) => {
     .catch((err) => {
       const error = new Error(err)
       error.httpStatusCode = 500;
+      console.log(err)
       return next(error)
+      
     });
 };
 
@@ -91,6 +93,7 @@ exports.postStaffEnd = async (req, res) => {
     .catch((err) => {
       const error = new Error(err)
       error.httpStatusCode = 500;
+      console.log(err)
       return next(error)
     });
 };
@@ -146,6 +149,7 @@ exports.postStaffLeave = async (req, res) => {
       .catch((err) => {
         const error = new Error(err)
         error.httpStatusCode = 500;
+        console.log(err)
         return next(error)
       });
 
@@ -165,6 +169,7 @@ exports.postStaffLeave = async (req, res) => {
       .catch((err) => {
         const error = new Error(err)
         error.httpStatusCode = 500;
+        console.log(err)
         return next(error)
       });
   }
@@ -192,6 +197,7 @@ exports.postInfo = async (req, res) => {
     .catch((err) => {
       const error = new Error(err)
       error.httpStatusCode = 500;
+      console.log(err)
       return next(error)
     });
 };
