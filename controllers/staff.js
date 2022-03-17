@@ -196,6 +196,8 @@ exports.postInfo = async (req, res) => {
     });
 };
 
+const ITEMS_PER_PAGE = 3
+
 exports.getWork = async (req, res) => {
   const user = await User.findById(req.session.user._id)
   const rollcall = await Rollcall.find({userId: req.session.user._id});
@@ -212,6 +214,9 @@ exports.getWork = async (req, res) => {
 
  const salary = user.salaryScale*3000000 + overTime*200000
 
+ const page = + req.query.page || 1
+ let totalItems
+
   // search
   const k = req.query.k
 
@@ -223,21 +228,33 @@ exports.getWork = async (req, res) => {
           pageTitle: "Thông tin công việc",
           user: user,
           rollcall: rollcall,
-          salary, 
-      
+          salary,     
         });
       });    
   } else {
-    res.render("work", {
-      pageTitle: "Thông tin công việc",
-      user: user,
-      rollcall: rollcall,
-      salary, 
-  
-      
-    });
-  }
-  
+    Rollcall.find({userId: req.session.user._id})
+      .countDocuments()
+      .then(numberRollcall => {
+        totalItems = numberRollcall
+        return Rollcall.find()
+                .skip((page -1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+      })
+      .then((rollcall) => {
+      res.render("work", {
+        pageTitle: "Thông tin công việc",
+        user: user,
+        rollcall: rollcall,
+        salary,
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
+      });
+    })
+  }  
 };
 
 exports.getCovid = async (req, res) => {

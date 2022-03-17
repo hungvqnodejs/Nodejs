@@ -55,5 +55,28 @@
             </tbody>
           </table>
           <p class="lead">Lương hiện tại <%= salary %></p>
+          
+          <nav aria-label="...">
+            <ul class="pagination pagination-m">
+              <% if (currentPage !== 1 && previousPage !== 1){ %>
+                <li class="page-item active" aria-current="page">
+                  <span class="page-link" href="/work?page=1">1</span>
+                </li>
+              <% } %> 
+              <% if (hasPreviousPage){ %> 
+                <li class="page-item"><a class="page-link" href="/work?page=<%= previousPage %>"><%= previousPage %></a></li>
+              <% } %> 
+
+              <li class="page-item"><a class="page-link" href="/work?page=<%= currentPage %>"><%= currentPage %></a></li>
+
+              <% if (hasNextPage){ %>
+              <li class="page-item"><a class="page-link" href="/work?page=<%= nextPage %>"><%= nextPage %></a></li>
+              <% } %>   
+
+              <% if (lastPage !== currentPage && nextPage !== lastPage){ %>
+              <li class="page-item"><a class="page-link" href="/work?page=<%= lastPage %>"><%= lastPage %></a></li>
+              <% } %>  
+            </ul>
+          </nav>
 </section>
 <%- include('./includes/end.ejs') %>
