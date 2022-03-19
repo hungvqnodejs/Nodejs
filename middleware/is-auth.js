@@ -1,4 +1,4 @@
-const user = require("../models/user");
+const User = require("../models/user");
 
 const isAuth = (req, res, next) => {
     if (!req.session.isLoggedIn) {
@@ -8,9 +8,10 @@ const isAuth = (req, res, next) => {
 }
 
 const isAdmin = (req, res, next) => {
-    if (user.department !== "MGR") {
-        return res.redirect('/500');
-    }
+    User.findById(req.session.user._id)
+     if (req.session.user.department !== "MGR") {
+         return res.redirect('/500');
+     }
     next();
 }
 

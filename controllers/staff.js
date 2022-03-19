@@ -293,8 +293,9 @@ exports.getCovid = async (req, res) => {
     vaccine: vaccine,
     disabledVaccine: disabledVaccine,
     disabledVaccine2: disabledVaccine2,
-
+    isAdmin: req.session.user.department
   });
+  console.log(req.session.user.department,'department')
 };
 
 exports.postCovid = async (req, res) => {
@@ -344,4 +345,6 @@ exports.postCovid = async (req, res) => {
         console.log(err);
       });
   }
+
+  console.log(typeof req.session.user.department )
 };
