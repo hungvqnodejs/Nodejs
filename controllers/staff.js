@@ -269,18 +269,25 @@ exports.getCovid = async (req, res) => {
   const covid = await Covid.find({userId: req.session.user._id});
   const vaccine = await Vaccine.find({userId: req.session.user._id});
 
+  const users= await User.find({department: { $ne: 'MGR' } });
+  const bodyTemperatureAdmin = await BodyTemperature.find({userId: req.query.idStaff });
+  const covidAdmin = await Covid.find({userId: req.query.idStaff });
+  const vaccineAdmin = await Vaccine.find({userId: req.query.idStaff });
+
+  
+
   // Điều kiện chọn mũi 1 - mũi 2
-  const existsVaccine = await Vaccine.findOne({ injection: "mui1" });
-  const existsVaccine2 = await Vaccine.findOne({ injection: "mui2" });
+  const existsVaccine = await Vaccine.findOne({ userId: req.session.user._id, injection: "Mũi 1" });
+  const existsVaccine2 = await Vaccine.findOne({ userId: req.session.user._id, injection: "Mũi 2" });
   let disabledVaccine = null;
   let disabledVaccine2 = null;
   if (existsVaccine) {
-    if (existsVaccine.injection === "mui1") {
+    if (existsVaccine.injection === "Mũi 1") {
       disabledVaccine = "disabled";
     }
   }
   if (existsVaccine2) {
-    if (existsVaccine2.injection === "mui2") {
+    if (existsVaccine2.injection === "Mũi 2") {
       disabledVaccine2 = "disabled";
     }
   }
@@ -288,14 +295,17 @@ exports.getCovid = async (req, res) => {
   res.render("covid", {
     pageTitle: "Thông tin Covid cá nhân",
     user: user,
+    users: users,
     bodyTemperature: bodyTemperature,
     covid: covid,
     vaccine: vaccine,
+    bodyTemperatureAdmin: bodyTemperatureAdmin,
+    covidAdmin: covidAdmin,
+    vaccineAdmin: vaccineAdmin,
     disabledVaccine: disabledVaccine,
     disabledVaccine2: disabledVaccine2,
     isAdmin: req.session.user.department
   });
-  console.log(req.session.user.department,'department')
 };
 
 exports.postCovid = async (req, res) => {
@@ -345,6 +355,4 @@ exports.postCovid = async (req, res) => {
         console.log(err);
       });
   }
-
-  console.log(typeof req.session.user.department )
 };

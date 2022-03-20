@@ -11,9 +11,54 @@
         </h1>
         <br>
          <hr>   
+         <div class="col-md-5">
+            <label for="vaccine" class="form-label">Tên Nhân viên</label>
+            <form class="col-12 col-lg-6 mb-3 mb-lg-0 me-lg-6" action="/admin" method="GET">  
+            <select class="form-select" id="idStaff" name="idStaff" type="submit" required>         
+              <option value="" selected disabled>Chọn tên nhân viên</option>
+              <% for (let item of users) { %>
+              <option value="<%= item._id %>"><%= item.name %></option>
+              <% } %>
+            </select>
+            </form>
+          </div>   
         
+          <br>
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Ngày</th>
+                <th scope="col">Giờ bắt đầu</th>
+                <th scope="col">Giờ kết thúc</th>
+                <th scope="col">Nơi làm việc</th>     
+                <th scope="col">Tổng số giờ đã làm</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% for (let item of rollcall) { %>
+              <tr>
+                <th scope="row"><%= item.startTime.toLocaleDateString() %></th>
+                <td><%= item.startTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) %></td>
+                <td class="row rowfix">
+                  <div class="col-6"><%= item.endTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) %> </div>
+                  <form action="/admin" method="POST" class="col-6">
+                    <input type="hidden" value="<%= item.endTime %>" name="endTimeId">
+                    <button class="btn btn-primary btn-xl" type="submit">Xóa</button>
+                </form>
+                </td>
+                <td><%= item.workplace %></td>
+                <td><%= item.timework %></td>
+              </tr>
+                <% } %>
+            </tbody>
+          </table>
     </div>
 </section>
 
 <script src="/js/staff.js"></script>
+<script>
+    $('#idStaff').on('change', function(event) {
+        this.form.submit();
+});
+</script>
 <%- include('./includes/end.ejs') %>

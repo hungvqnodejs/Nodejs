@@ -20,23 +20,71 @@
           
           <div class="container-fluid py-6">
             <h3 class="display-8 fw-bold">Quản lý thông tin covid nhân viên</h3>
-            <button class="btn btn-primary btn-lg" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Xem toàn bộ Nhân viên</button>
           </div>
           <br>
-          <div class="collapse" id="collapseExample">
           
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="flush-headingOne">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                  Thôn tin Covid của
-                </button>
-              </h2>
-              <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
-              </div>
-            </div>
-         
-          </div>
+          <div class="col-md-7">
+            <form class="col-12 col-lg-6 mb-3 mb-lg-0 me-lg-6" action="/covid" method="GET">  
+            <select class="form-select" id="idStaff" name="idStaff" type="submit" required>         
+              <option value="" selected disabled>Chọn tên nhân viên</option>
+              <% for (let item of users) { %>
+              <option value="<%= item._id %>"><%= item.name %></option>
+              <% } %>
+            </select>
+            </form>
+          </div> 
+          <br>
+          <% if (bodyTemperatureAdmin.length > 0 || vaccineAdmin.length > 0 ) { %> 
+            <div class="subheading mb-2 textcovid">Nhân viên <%= users[0].name %> | Phòng ban  <%= users[0].department %></div>
+          <ul class="fa-ul mb-0">
+            <div class="subheading mb-2 textcovid">Thông tin thân nhiệt</div>
+            <% for (let item of bodyTemperatureAdmin) { %>
+              <li>
+                  <span class="fa-li"><i class="fas fa-check"></i></span>
+                  Nhiệt độ <%= item.temperature %> độ C
+              </li>
+            <% } %>
+          </ul>
+
+          <ul class="fa-ul mb-0">
+            <div class="subheading mb-2 textcovid">Thông tin tiêm vaccine</div>  
+            <% for (let item of vaccineAdmin) { %>
+              <li>
+                  <span class="fa-li"><i class="fas fa-check"></i></span>
+                  <%= item.injection %> Vaccine: <%= item.vaccineType %>
+              </li>
+            <% } %>
+          </ul>
+
+          <ul class="fa-ul mb-0">
+            <div class="subheading mb-2 textcovid">Thông tin đăng ký dương tính với covid</div>
+            <% if (covidAdmin.length > 0 ) { %> 
+              <% for (let item of covidAdmin) { %>
+              <li>
+                  <span class="fa-li"><i class="fas fa-check"></i></span>
+                  Trong vòng 14 ngày qua, Anh/Chị có đến quốc gia/vùng lãnh thổ nào (Có thể đi qua nhiều quốc gia): <br>
+                  <%= item.arrive %> 
+              </li>
+
+              <li>
+                <span class="fa-li"><i class="fas fa-check"></i></span>
+                Trong vòng 14 ngày qua, Anh/Chị có thấy xuất hiện dấu hiệu nào sau đây không? <br>
+                <%= item.symptom %> 
+              </li>
+
+              <li>
+                <span class="fa-li"><i class="fas fa-check"></i></span>
+                Trong vòng 14 ngày qua, Anh/Chị có tiếp xúc với : <br>
+                <%= item.contact %> 
+              </li>
+
+              <% } %>
+            <% } else { %>
+              <span class="fa-li"><i class="fas fa-check"></i></span>
+                  Chưa có thông tin
+            <% } %>  
+          </ul>
+          <% } %>
         </div>
         <% } %>
 
@@ -93,7 +141,7 @@
               </h2>
               <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                 <form action="/covid" method="POST">
-                <% if(disabledVaccine2){ %>
+                <% if(vaccine.length > 0 && disabledVaccine2){ %>
                   <div class="success-msg accordion-body">
                     <i class="fa-solid fa-circle-check"></i>
                     Đã tiêm cả 2 mũi <br>
@@ -104,8 +152,8 @@
                   <div class="col-md-2">
                     <label for="country" class="form-label">Mũi Tiêm</label>
                     <select class="form-select" name="injection" required>
-                      <option value="mui1" <%= disabledVaccine %> >Mũi 1</option>
-                      <option value="mui2" <%= disabledVaccine2 %>>Mũi 2</option>
+                      <option value="Mũi 1" <%= disabledVaccine %> >Mũi 1</option>
+                      <option value="Mũi 2" <%= disabledVaccine2 %>>Mũi 2</option>
                     </select>
                     <div class="invalid-feedback">
                       Hãy chọn mũi tiêm
@@ -122,9 +170,6 @@
                       <option value="Moderna">Moderna</option>
                       <option value="Sputnik V">Sputnik V</option>
                     </select>
-                    <div class="invalid-feedback">
-                      Hãy chọn loại vaccine
-                    </div>
                   </div>
       
                   <div class="col-md-4">
@@ -138,7 +183,7 @@
                   <div class="col-md-3">
                     <button class="btn btn-primary sendleave" type="submit">Gửi thông tin</button>   
                  </div>
-                 <% if (disabledVaccine) { %>
+                 <% if (vaccine.length > 0 && disabledVaccine) { %>
                  <div class="success-msg accordion-body">
                           <i class="fa-solid fa-circle-check"></i>
                           Đã tiêm Mũi 1 <br>
@@ -264,7 +309,10 @@
 <script src="js/jquery.datetimepicker.full.min.js"></script>
 <script>
     jQuery('.datetimepicker').datetimepicker({
-        format:'H:i d/m/Y',
+        //format:'H:i d/m/Y',
     });
+    $('#idStaff').on('change', function(event) {
+      this.form.submit();
+});
 </script>
 <%- include('./includes/end.ejs') %>
