@@ -40,11 +40,37 @@
                 <th scope="row"><%= item.startTime.toLocaleDateString() %></th>
                 <td><%= item.startTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) %></td>
                 <td class="row rowfix">
-                  <div class="col-4"><%= item.endTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) %> </div>
-                  <form action="/admin/<%= item._id %>" method="POST" class="col-6">
-                    <input type="text" class="datetimepicker col-4" value="<%= item.endTime %>" name="endTime">
-                    <button class="btn btn-primary btn-xl col-4" type="submit">Sửa</button>
+                  <div class="col-3"><%= item.endTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) %> </div>
+                  <form action="/admin/<%= item._id %>" method="POST" class="col-9">
+                    <input type="text" class="datetimepicker" value="<%= item.endTime %>" name="endTime">
+                    <button class="btn btn-primary btn-xl " type="submit">Sửa</button>
                 </form>
+
+                <!-- <button type="button" class="btn btn-primary col-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Sửa
+                </button>
+                <form action="/admin/<%= item._id %>" method="POST" class="col-9"></form>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Sửa thời gian kết thúc</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          
+                    <input type="text" class="datetimepicker" value="<%= item.endTime %>" name="endTime">      
+                          
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary " type="submit">Lưu lại</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form> -->
+
                 </td>
                 <td><%= item.workplace %></td>
                 <td><%= item.timework %></td>
