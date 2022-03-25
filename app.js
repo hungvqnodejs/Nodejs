@@ -66,6 +66,7 @@ app.use(
 app.use(flash())
 app.use(authRoutes);
 app.use("/", routes);
+app.use("/export", require('./routes/export'));
 app.use(AdminRoutes);
 app.get('/500', errorController.get500)
 app.use(errorController.get404);

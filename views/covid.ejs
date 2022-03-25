@@ -15,78 +15,7 @@
 
         <hr>
         <br>
-        <% if(isAdmin  === "MGR"){ %>
-        <div class="p-5 mb-4 bg-light rounded-3">
-          
-          <div class="container-fluid py-6">
-            <h3 class="display-8 fw-bold">Quản lý thông tin covid nhân viên</h3>
-          </div>
-          <br>
-          
-          <div class="col-md-7">
-            <form class="col-12 col-lg-6 mb-3 mb-lg-0 me-lg-6" action="/covid" method="GET">  
-            <select class="form-select" id="idStaff" name="idStaff" type="submit" required>         
-              <option value="" selected disabled>Chọn tên nhân viên</option>
-              <% for (let item of users) { %>
-              <option value="<%= item._id %>"><%= item.name %></option>
-              <% } %>
-            </select>
-            </form>
-          </div> 
-          <br>
-          <% if (bodyTemperatureAdmin.length > 0 || vaccineAdmin.length > 0 ) { %> 
-            <div class="subheading mb-2 textcovid">Nhân viên <%= users[0].name %> | Phòng ban  <%= users[0].department %></div>
-          <ul class="fa-ul mb-0">
-            <div class="subheading mb-2 textcovid">Thông tin thân nhiệt</div>
-            <% for (let item of bodyTemperatureAdmin) { %>
-              <li>
-                  <span class="fa-li"><i class="fas fa-check"></i></span>
-                  Nhiệt độ <%= item.temperature %> độ C
-              </li>
-            <% } %>
-          </ul>
-
-          <ul class="fa-ul mb-0">
-            <div class="subheading mb-2 textcovid">Thông tin tiêm vaccine</div>  
-            <% for (let item of vaccineAdmin) { %>
-              <li>
-                  <span class="fa-li"><i class="fas fa-check"></i></span>
-                  <%= item.injection %> Vaccine: <%= item.vaccineType %>
-              </li>
-            <% } %>
-          </ul>
-
-          <ul class="fa-ul mb-0">
-            <div class="subheading mb-2 textcovid">Thông tin đăng ký dương tính với covid</div>
-            <% if (covidAdmin.length > 0 ) { %> 
-              <% for (let item of covidAdmin) { %>
-              <li>
-                  <span class="fa-li"><i class="fas fa-check"></i></span>
-                  Trong vòng 14 ngày qua, Anh/Chị có đến quốc gia/vùng lãnh thổ nào (Có thể đi qua nhiều quốc gia): <br>
-                  <%= item.arrive %> 
-              </li>
-
-              <li>
-                <span class="fa-li"><i class="fas fa-check"></i></span>
-                Trong vòng 14 ngày qua, Anh/Chị có thấy xuất hiện dấu hiệu nào sau đây không? <br>
-                <%= item.symptom %> 
-              </li>
-
-              <li>
-                <span class="fa-li"><i class="fas fa-check"></i></span>
-                Trong vòng 14 ngày qua, Anh/Chị có tiếp xúc với : <br>
-                <%= item.contact %> 
-              </li>
-
-              <% } %>
-            <% } else { %>
-              <span class="fa-li"><i class="fas fa-check"></i></span>
-                  Chưa có thông tin
-            <% } %>  
-          </ul>
-          <% } %>
-        </div>
-        <% } %>
+<%- include('./includes/covidAdminForm.ejs') %>        
 
         <br>
         <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -311,8 +240,10 @@
     jQuery('.datetimepicker').datetimepicker({
         //format:'H:i d/m/Y',
     });
+    
     $('#idStaff').on('change', function(event) {
-      this.form.submit();
-});
+        this.form.submit();
+    });
+    
 </script>
 <%- include('./includes/end.ejs') %>

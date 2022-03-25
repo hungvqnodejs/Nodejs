@@ -41,9 +41,9 @@
                 <td><%= item.startTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) %></td>
                 <td class="row rowfix">
                   <div class="col-6"><%= item.endTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) %> </div>
-                  <form action="/admin" method="POST" class="col-6">
-                    <input type="hidden" value="<%= item.endTime %>" name="endTimeId">
-                    <button class="btn btn-primary btn-xl" type="submit">Xóa</button>
+                  <form action="/admin/<%= item._id %>" method="POST" class="col-6">
+                    <input type="text" class="datetimepicker" value="<%= item.endTime %>" name="endTime">
+                    <button class="btn btn-primary btn-xl" type="submit">Sửa</button>
                 </form>
                 </td>
                 <td><%= item.workplace %></td>
@@ -55,8 +55,15 @@
     </div>
 </section>
 
+<link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css"/ >
+<script src="js/jquery.js"></script>
+<script src="js/jquery.datetimepicker.full.min.js"></script>
 <script src="/js/staff.js"></script>
 <script>
+      jQuery('.datetimepicker').datetimepicker({
+
+    });
+
     $('#idStaff').on('change', function(event) {
         this.form.submit();
 });

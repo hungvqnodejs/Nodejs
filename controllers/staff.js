@@ -1,3 +1,7 @@
+const fs = require('fs')
+const path = require('path')
+const PDFDoc = require('pdfkit')
+
 const Rollcall = require("../models/rollcall");
 const User = require("../models/user");
 const AnnualLeave = require("../models/annualLeave");
@@ -31,7 +35,7 @@ exports.postStaffRollcall = async (req, res) => {
   const rollcall = new Rollcall({
     workplace: req.body.workplace,
     startTime: startTime,
-    endTime: "",
+    endTime: null,
     userId: req.session.user
   });
   rollcall
@@ -182,7 +186,6 @@ exports.getInfo = async (req, res) => {
 
 exports.postInfo = async (req, res) => {
   const image = req.file
-  console.log(image)
   User.findById(req.session.user._id)
     .then((user) => {
       if(image){
@@ -242,7 +245,7 @@ exports.getWork = async (req, res) => {
       .countDocuments()
       .then(numberRollcall => {
         totalItems = numberRollcall
-        return Rollcall.find()
+        return Rollcall.find({userId: req.session.user._id})
                 .skip((page -1) * ITEMS_PER_PAGE)
                 .limit(ITEMS_PER_PAGE)
       })
@@ -264,6 +267,8 @@ exports.getWork = async (req, res) => {
 };
 
 exports.getCovid = async (req, res) => {
+
+  const currentUser = await User.findById(req.query.idStaff);
   const user = await User.findById(req.session.user._id)
   const bodyTemperature = await BodyTemperature.find({userId: req.session.user._id});
   const covid = await Covid.find({userId: req.session.user._id});
@@ -291,11 +296,11 @@ exports.getCovid = async (req, res) => {
       disabledVaccine2 = "disabled";
     }
   }
-
   res.render("covid", {
     pageTitle: "Thông tin Covid cá nhân",
     user: user,
     users: users,
+    currentUser: currentUser,
     bodyTemperature: bodyTemperature,
     covid: covid,
     vaccine: vaccine,
@@ -355,4 +360,20 @@ exports.postCovid = async (req, res) => {
         console.log(err);
       });
   }
+};
+
+exports.getPDFCovid = async (req, res) => {
+  console.log('ok');
+  // const CovidId = req.params.covidId
+  // const pdfCovidName = 'pdfcovid-' + CovidId + '.pdf'
+  const pdfCovidPath = path.join('public','assets', 'test.pdf');
+  console.log(pdfCovidPath);
+  
+  fs.readFile(pdfCovidPath, (err, data) => {
+    if(err) {
+      return next(err)
+    }
+    res.setHeader('Content-Type', 'application/pdf');
+    res.send(data)
+  })
 };

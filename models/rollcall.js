@@ -5,7 +5,6 @@ const Schema = mongoose.Schema;
 const rollcallSchema = new Schema({
   workplace: {
     type: String,
-    required: true
   },
   startTime: {
     type: Date,

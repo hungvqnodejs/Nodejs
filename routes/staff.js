@@ -1,7 +1,7 @@
 const express = require('express');
 
 const staffController = require('../controllers/staff')
-const {isAuth} = require('../middleware/is-auth');
+const {isAuth, isAdmin} = require('../middleware/is-auth');
 
 const router = express.Router();
 
@@ -13,6 +13,9 @@ router.get('/staff-end', isAuth,  staffController.getStaffEnd)
 router.get('/info', isAuth, staffController.getInfo)
 router.get('/work', isAuth, staffController.getWork)
 router.get('/covid', isAuth, staffController.getCovid)
+router.get('/covid/:idStaff', isAuth, staffController.getCovid)
+
+router.get('/covid',isAuth, isAdmin, staffController.getPDFCovid)
 
 router.post('/staff-rollcall',isAuth,  staffController.postStaffRollcall)
 router.post('/staff-end/:rollcallId',isAuth,  staffController.postStaffEnd)
