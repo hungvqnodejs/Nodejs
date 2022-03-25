@@ -25,7 +25,7 @@ const exportFilePdf = async (req, res) => {
  
 
     const pdfDoc = new PDFDocument();
-    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('content-type', 'application/pdf' );
     res.setHeader(
         'Content-Disposition', 
         'inline; filename="test2"'

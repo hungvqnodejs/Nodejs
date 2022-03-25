@@ -1,5 +1,6 @@
 const path = require("path");
-
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -112,7 +113,7 @@ mongoose
     //         user.save()
     //     }
     // })
-    app.listen(5000);
+    app.listen(process.env.PORT || 5000);
   })
   .catch((err) => {
     console.log(err)
