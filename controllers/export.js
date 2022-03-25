@@ -26,6 +26,7 @@ const exportFilePdf = async (req, res) => {
 
     const pdfDoc = new PDFDocument();
     res.setHeader('content-type', 'application/pdf' );
+    res.setEncoding('utf8');
     res.setHeader(
         'Content-Disposition', 
         'inline; filename="test2"'
@@ -34,38 +35,32 @@ const exportFilePdf = async (req, res) => {
 
 
     pdfDoc.pipe(fs.createWriteStream(pdfCovidPath));
-    pdfDoc.pipe(res);
-    pdfDoc.fontSize(26).text('Hello troller');
-    pdfDoc.text('------------------------');
+    pdfDoc.pipe(res); 
 
-    pdfDoc.text(currentUser.name);
+    pdfDoc.text(`Nhân viên ${currentUser.name} || Phòng ban ${currentUser.department}`);
+
+    pdfDoc.text('________________________');
+
+    pdfDoc.text('Thông tin thân nhiệt');
     bodyTemperatureAdmin.forEach(item => {
-        pdfDoc.text(`Temperature: ${item.temperature}`);
+        pdfDoc.text(`- Thân nhiệt: ${item.temperature} độ C`);
     })
 
+    pdfDoc.text('Thông tin Vaccine');
     vaccineAdmin.forEach(item => {
-        pdfDoc.text(`${item.injection} -- ${item.vaccineType}`);
+        pdfDoc.text(`- ${item.injection} -- ${item.vaccineType}`);
     })
 
+    pdfDoc.text('Thông tin khai báo Covid');
     if(covidAdmin && covidAdmin.length > 0){
         covidAdmin.forEach(item => {
             pdfDoc.text(`${item.injection} -- ${item.vaccineType}`);
         })
     } else {
-        pdfDoc.text('Chua co thong tin')
+        pdfDoc.text('Chưa có thông tin')
     }
     
-
-
     pdfDoc.end();
-
-    // fs.readFile(pdfCovidPath, (err, data) => {
-    //   if(err) {
-    //     return next(err)
-    //   }
-    //   res.setHeader('Content-Type', 'application/pdf');
-    //   res.send(data)
-    // })
 };
 
 module.exports = {

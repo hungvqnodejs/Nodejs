@@ -40,10 +40,10 @@
                 <th scope="row"><%= item.startTime.toLocaleDateString() %></th>
                 <td><%= item.startTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) %></td>
                 <td class="row rowfix">
-                  <div class="col-6"><%= item.endTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) %> </div>
+                  <div class="col-4"><%= item.endTime.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) %> </div>
                   <form action="/admin/<%= item._id %>" method="POST" class="col-6">
-                    <input type="text" class="datetimepicker" value="<%= item.endTime %>" name="endTime">
-                    <button class="btn btn-primary btn-xl" type="submit">Sửa</button>
+                    <input type="text" class="datetimepicker col-4" value="<%= item.endTime %>" name="endTime">
+                    <button class="btn btn-primary btn-xl col-4" type="submit">Sửa</button>
                 </form>
                 </td>
                 <td><%= item.workplace %></td>

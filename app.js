@@ -99,20 +99,7 @@ app.use((req, res, next) => {
 mongoose
   .connect(MONGODB_URI)
   .then((result) => {
-    // User.findOne().then(user => {
-    //     if(!user) {
-    //         const user = new User({
-    //             name: 'Ken',
-    //             doB: new Date("1993-04-08"),
-    //             salaryScale: 1,
-    //             startDate: new Date("2022-02-12"),
-    //             department: 'IT',
-    //             annualLeave: 12,
-    //             Image: '1234'
-    //         })
-    //         user.save()
-    //     }
-    // })
+
     app.listen(process.env.PORT || 5000);
   })
   .catch((err) => {
