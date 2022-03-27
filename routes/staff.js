@@ -15,8 +15,6 @@ router.get('/work', isAuth, staffController.getWork)
 router.get('/covid', isAuth, staffController.getCovid)
 router.get('/covid/:idStaff', isAuth, staffController.getCovid)
 
-router.get('/covid',isAuth, isAdmin, staffController.getPDFCovid)
-
 router.post('/staff-rollcall',isAuth,  staffController.postStaffRollcall)
 router.post('/staff-end/:rollcallId',isAuth,  staffController.postStaffEnd)
 router.post('/info',isAuth,  staffController.postInfo)

@@ -1,7 +1,3 @@
-const fs = require('fs')
-const path = require('path')
-const PDFDoc = require('pdfkit')
-
 const Rollcall = require("../models/rollcall");
 const User = require("../models/user");
 const AnnualLeave = require("../models/annualLeave");
@@ -362,18 +358,3 @@ exports.postCovid = async (req, res) => {
   }
 };
 
-exports.getPDFCovid = async (req, res) => {
-  console.log('ok');
-  // const CovidId = req.params.covidId
-  // const pdfCovidName = 'pdfcovid-' + CovidId + '.pdf'
-  const pdfCovidPath = path.join('public','assets', 'test.pdf');
-  console.log(pdfCovidPath);
-  
-  fs.readFile(pdfCovidPath, (err, data) => {
-    if(err) {
-      return next(err)
-    }
-    res.setHeader('Content-Type', 'application/pdf');
-    res.send(data)
-  })
-};
